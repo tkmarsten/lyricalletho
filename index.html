@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            clifford: '#da373d',
+            primary: '#ff685d',
+            screens: {
+              'tablet': '640px',
+              // => @media (min-width: 640px) { ... }
+              'laptop': '1024px',
+              // => @media (min-width: 1024px) { ... }
+              'desktop': '1280px',
+              // => @media (min-width: 1280px) { ... }
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <title>Testing</title>
+</head>
+
+<body>
+  <nav class="bg-clifford text-center p-4">
+    <input class="px-4 py-3 rounded-l-lg min-w-[75%]" placeholder="insert lyrics here"></form>
+    <button class="rounded-r-lg bg-blue bg-white p-3">search</button>
+  </nav>
+  <!-- main holding EVERYTHING: color salmon -->
+  <main class="bg-primary flex h-screen">
+    <!-- white container in middle -->
+    <div class="flex-auto border-2 m-10">
+          <p class="border-2 m-4 h-10 p-1 text-center">RESULTS</p>
+          <!-- div containing music options: black border -->
+          <div class="grid grid-cols-4 gap-4 content-around m-2 border-2 border-black">
+            <div class="border-2 h-20">01</div>
+            <div class="border-2 h-20">02</div>
+            <div class="border-2 h-20">03</div>
+            <div class="border-2 h-20">04</div>
+            <div class="border-2 h-20">05</div>
+            <div class="border-2 h-20">05</div>
+            <div class="border-2 h-20">05</div>
+            <div class="border-2 h-20">05</div>
+            <div class="border-2 h-20">05</div>
+            <div class="border-2 h-20">05</div>
+            <div class="border-2 h-20">05</div>
+            <div class="border-2 h-20">05</div>
+          </div>
+          <div class="h-full m-2 flex border-2 border-black">
+
+          </div>
+    </div>
+  </main>
+</body>
+
+</html>
