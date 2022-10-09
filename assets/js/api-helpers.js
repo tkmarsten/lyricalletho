@@ -1,4 +1,47 @@
-//todo: Access-Tokens only last for an hour. Not neccessary for this project, but could implement token renwal on expiration.
+/**
+ *  Custom wrapper for genius api calls. Construct it with an access token.
+ * No need for access token fetching since you're passing it in directly.
+ * you can use get() or rawGet() methods to return a fetch promise.
+ */
+ class Genius{
+    constructor(accessToken){
+        this._accessToken = accessToken;
+        this._baseUrl = "https://api.genius.com";
+    }
+
+    /**
+     * Maket a GET request with a raw path (it will include the access token automatically)
+     * @param {String} path raw string past the base url: 'https://api.genius.com'
+     * @returns A fetch promise
+     */
+    rawGet(path){
+        return fetch(this._baseUrl + path + `access_token=${this._accessToken}`);
+    }
+
+    /**
+     * Make a GET request to the endpoint including, if any, options.
+     * ex: endpoint: "/search"
+     * ex: options: {q: "I'm a genie in a bottle"}
+     * @param {String} endpoint the endpoint - required
+     * @param {Object} options the options - dependent on the endpoint
+     * @returns A fetch promise
+     */
+    get(endpoint, parameters){
+        var final = this._buildUrl(endpoint, parameters);
+        return this.rawGet(final);
+    }
+
+    _buildUrl = function (url, parameters) {
+        var qs = '';
+        for (var key in parameters) {
+          if (parameters.hasOwnProperty(key)) {
+            var value = parameters[key];
+            qs += encodeURIComponent(key) + '=' + encodeURIComponent(value) + '&';
+          }
+        }
+        return url + '?' + qs;
+      };
+}
 
 /**
  * Custom wrapper for spotify api calls. Construct it with your id/secret.
@@ -6,12 +49,14 @@
  * you can use get() or rawGet() methods to return a fetch promise.
  */
  class Spotify {
+    
     constructor(clientId, clientSecret){
         this._clientId = clientId;
         this._clientSecret = clientSecret;
         this._baseUrl = 'https://api.spotify.com/v1';
     }
 
+    //todo: Access-Tokens only last for an hour. Not neccessary for this project, but could implement token renwal on expiration.
     /** Just fetches the access-token, with the option of a callback on completion.
      * This is required to use the get methods.
     */
