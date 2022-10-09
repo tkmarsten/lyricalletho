@@ -3,7 +3,7 @@
  * No need for access token fetching since you're passing it in directly.
  * You can use get() or rawGet() methods to return a fetch promise.
  */
- class Genius{
+ export class Genius{
     constructor(accessToken){
         this._accessToken = accessToken;
         this._baseUrl = "https://api.genius.com";
@@ -47,7 +47,7 @@
  *  Custom wrapper for YouTube API calls. Construct it with an api key.
  * You can use get() or rawGet() methods to return a fetch promise.
  */
-class YouTube{
+export class YouTube{
     constructor(apiKey){
         this._apiKey = apiKey;
         this._baseUrl = "https://www.googleapis.com/youtube/v3";
@@ -92,7 +92,7 @@ class YouTube{
  * Invoke initialize for it to grab the access token. Once it has the access token
  * you can use get() or rawGet() methods to return a fetch promise.
  */
- class Spotify {
+export class Spotify {
     
     constructor(clientId, clientSecret){
         this._clientId = clientId;

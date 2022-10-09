@@ -32,8 +32,8 @@
 
 <body>
   <nav class="bg-clifford text-center p-4">
-    <input class="px-4 py-3 rounded-l-lg min-w-[75%]" placeholder="insert lyrics here"></form>
-    <button class="rounded-r-lg bg-blue bg-white p-3">search</button>
+    <input id="lyricInput" class="px-4 py-3 rounded-l-lg min-w-[75%]" placeholder="insert lyrics here"></form>
+    <button id="searchButton" class="rounded-r-lg bg-blue bg-white p-3">search</button>
   </nav>
   <!-- main holding EVERYTHING: color salmon -->
   <main class="bg-primary flex h-screen">
@@ -41,26 +41,29 @@
     <div class="flex flex-auto flex-col border-2 m-10">
         <p class="border-2 m-4 h-10 p-1 text-center">RESULTS</p>
         <!-- div containing music options: black border -->
-        <div class="grid grid-cols-4 gap-4 content-around m-2 border-2 border-black">
-          <div class="border-2 h-20">01</div>
-          <div class="border-2 h-20">02</div>
-          <div class="border-2 h-20">03</div>
-          <div class="border-2 h-20">04</div>
-          <div class="border-2 h-20">05</div>
-          <div class="border-2 h-20">05</div>
-          <div class="border-2 h-20">05</div>
-          <div class="border-2 h-20">05</div>
-          <div class="border-2 h-20">05</div>
-          <div class="border-2 h-20">05</div>
-          <div class="border-2 h-20">05</div>
-          <div class="border-2 h-20">05</div>
+        <div id="resultsContainer" class="grid grid-cols-4 gap-4 content-around m-2 border-2 border-black">
+          <div id="result0" class="border-2 h-20">02</div>
+          <div id="result1" class="border-2 h-20">03</div>
+          <div id="result2" class="border-2 h-20">04</div>
+          <div id="result3" class="border-2 h-20">01</div>
+          <div id="result4" class="border-2 h-20">05</div>
+          <div id="result" class="border-2 h-20">05</div>
+          <div id="result" class="border-2 h-20">05</div>
+          <div id="result" class="border-2 h-20">05</div>
+          <div id="result" class="border-2 h-20">05</div>
+          <div id="result" class="border-2 h-20">05</div>
+          <div id="result" class="border-2 h-20">05</div>
+          <div id="result" class="border-2 h-20">05</div>
         </div>
         
-        <div class="flex h-screen m-2 border-2 border-black">
+        <div id="bottomBox" class="flex h-screen m-2 border-2 border-black">
           <p>bottom box</p>
         </div>
     </div>
   </main>
+
+  <script type="module" src="./assets/js/api-helpers.js"></script>
+  <script type="module" src="./assets/js/index.js"></script>
 </body>
 
 </html>
