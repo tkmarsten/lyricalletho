@@ -1,7 +1,7 @@
 /**
- *  Custom wrapper for genius api calls. Construct it with an access token.
+ *  Custom wrapper for Genius API calls. Construct it with an access token.
  * No need for access token fetching since you're passing it in directly.
- * you can use get() or rawGet() methods to return a fetch promise.
+ * You can use get() or rawGet() methods to return a fetch promise.
  */
  class Genius{
     constructor(accessToken){
@@ -21,9 +21,9 @@
     /**
      * Make a GET request to the endpoint including, if any, options.
      * ex: endpoint: "/search"
-     * ex: options: {q: "I'm a genie in a bottle"}
+     * ex: parameters: {q: "I'm a genie in a bottle"}
      * @param {String} endpoint the endpoint - required
-     * @param {Object} options the options - dependent on the endpoint
+     * @param {Object} parameters the query parameters - dependent on the endpoint
      * @returns A fetch promise
      */
     get(endpoint, parameters){
@@ -44,7 +44,51 @@
 }
 
 /**
- * Custom wrapper for spotify api calls. Construct it with your id/secret.
+ *  Custom wrapper for YouTube API calls. Construct it with an api key.
+ * You can use get() or rawGet() methods to return a fetch promise.
+ */
+class YouTube{
+    constructor(apiKey){
+        this._apiKey = apiKey;
+        this._baseUrl = "https://www.googleapis.com/youtube/v3";
+    }
+
+    /**
+     * Maket a GET request with a raw path (it will include the api key automatically)
+     * @param {String} path raw string past the base url: 'https://www.googleapis.com/youtube/v3'
+     * @returns A fetch promise
+     */
+    getRaw(path){
+        return fetch(this._baseUrl + path + `key=${this._apiKey}`)
+    }
+
+    /**
+     * Make a GET request to the endpoint including, if any, parameters.
+     * ex: endpoint: "/search"
+     * ex: parameters: {q: "cat videos", part: "snippet", maxResults: "20"}
+     * @param {String} endpoint the endpoint - required
+     * @param {Object} parameters the query parameters - dependent on the endpoint
+     * @returns A fetch promise
+     */
+    get(endpoint, parameters){
+        var final = this._buildUrl(endpoint, parameters);
+        return this.getRaw(final);
+    }
+
+    _buildUrl = function (url, parameters) {
+        var qs = '';
+        for (var key in parameters) {
+          if (parameters.hasOwnProperty(key)) {
+            var value = parameters[key];
+            qs += encodeURIComponent(key) + '=' + encodeURIComponent(value) + '&';
+          }
+        }
+        return url + "?" + qs;
+      };
+}
+
+/**
+ * Custom wrapper for Spotify API calls. Construct it with your id/secret.
  * Invoke initialize for it to grab the access token. Once it has the access token
  * you can use get() or rawGet() methods to return a fetch promise.
  */
@@ -68,7 +112,6 @@
         
     }
 
-    /** only  */
     async _getToken(){
         var options = {
             method: 'POST',
@@ -107,11 +150,11 @@
      * ex: endpoint: "/artists/{id}/top-tracks"
      * ex: options: {q: "pink floyd", type: ["artist", "album"]}
      * @param {String} endpoint the endpoint - required
-     * @param {Object} options the options - dependent on the endpoint
+     * @param {Object} parameters the query parameters - dependent on the endpoint
      * @returns A fetch promise
      */
-    get(endpoint, options){
-        var final = this._buildUrl(endpoint, options);
+    get(endpoint, parameters){
+        var final = this._buildUrl(endpoint, parameters);
         return this.rawGet(final)
     }
 
