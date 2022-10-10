@@ -3,7 +3,11 @@
  * No need for access token fetching since you're passing it in directly.
  * You can use get() or rawGet() methods to return a fetch promise.
  */
- class Genius{
+ export class Genius{
+    /**
+     * 
+     * @param {String} accessToken 
+     */
     constructor(accessToken){
         this._accessToken = accessToken;
         this._baseUrl = "https://api.genius.com";
@@ -12,7 +16,7 @@
     /**
      * Maket a GET request with a raw path (it will include the access token automatically)
      * @param {String} path raw string past the base url: 'https://api.genius.com'
-     * @returns A fetch promise
+     * @returns {Promise<Response>} a response promise
      */
     rawGet(path){
         return fetch(this._baseUrl + path + `access_token=${this._accessToken}`);
@@ -24,7 +28,7 @@
      * ex: parameters: {q: "I'm a genie in a bottle"}
      * @param {String} endpoint the endpoint - required
      * @param {Object} parameters the query parameters - dependent on the endpoint
-     * @returns A fetch promise
+     * @returns {Promise<Response>} a response promise
      */
     get(endpoint, parameters){
         var final = this._buildUrl(endpoint, parameters);
@@ -47,7 +51,11 @@
  *  Custom wrapper for YouTube API calls. Construct it with an api key.
  * You can use get() or rawGet() methods to return a fetch promise.
  */
-class YouTube{
+export class YouTube{
+    /**
+     * 
+     * @param {string} apiKey 
+     */
     constructor(apiKey){
         this._apiKey = apiKey;
         this._baseUrl = "https://www.googleapis.com/youtube/v3";
@@ -56,7 +64,7 @@ class YouTube{
     /**
      * Maket a GET request with a raw path (it will include the api key automatically)
      * @param {String} path raw string past the base url: 'https://www.googleapis.com/youtube/v3'
-     * @returns A fetch promise
+     * @returns {Promise<Response>} a response promise
      */
     getRaw(path){
         return fetch(this._baseUrl + path + `key=${this._apiKey}`)
@@ -68,7 +76,7 @@ class YouTube{
      * ex: parameters: {q: "cat videos", part: "snippet", maxResults: "20"}
      * @param {String} endpoint the endpoint - required
      * @param {Object} parameters the query parameters - dependent on the endpoint
-     * @returns A fetch promise
+     * @returns {Promise<Response>} a response promise
      */
     get(endpoint, parameters){
         var final = this._buildUrl(endpoint, parameters);
@@ -92,8 +100,12 @@ class YouTube{
  * Invoke initialize for it to grab the access token. Once it has the access token
  * you can use get() or rawGet() methods to return a fetch promise.
  */
- class Spotify {
-    
+export class Spotify {
+    /**
+     * 
+     * @param {String} clientId 
+     * @param {String} clientSecret 
+     */
     constructor(clientId, clientSecret){
         this._clientId = clientId;
         this._clientSecret = clientSecret;
@@ -132,7 +144,7 @@ class YouTube{
     /**
      * Maket a GET request with a raw path
      * @param {String} path raw string past the base url: 'https://api.spotify.com/v1'
-     * @returns A fetch promise
+     * @returns {Promise<Response>} a response promise
      */
     rawGet(path){
         var options = {
@@ -151,7 +163,7 @@ class YouTube{
      * ex: options: {q: "pink floyd", type: ["artist", "album"]}
      * @param {String} endpoint the endpoint - required
      * @param {Object} parameters the query parameters - dependent on the endpoint
-     * @returns A fetch promise
+     * @returns {Promise<Response>} a response promise
      */
     get(endpoint, parameters){
         var final = this._buildUrl(endpoint, parameters);
