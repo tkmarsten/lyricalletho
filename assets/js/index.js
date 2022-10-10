@@ -1,3 +1,6 @@
+/// This is all just proof of concept and tinkering around with api calls
+/// not meant to be merged into the main branch. Just something to reference.
+
 import{ Genius, Spotify, YouTube } from './api-helpers.js'
 
 var elements = {
@@ -7,11 +10,14 @@ var elements = {
     bottomBox: document.querySelector("#bottomBox")
 }
 
+// place to store genius search data to use after the search if needed.
 var lastGeniusData;
 
+// setup the api helpers
 var genius = new Genius("GXl-jB2YMmbsujcZGKUFVHcIzhsZWf3XidKl02rkhtnwjHoWrwNEK8QqsDn73Oje");
 var spotify = new Spotify("3652984d5de34bf48e79cf4623a6d108", "904da68474a34335a798dfef767188ac");
 spotify.initialize();
+
 
 function onSearchPressed(){
     var input = elements.lyricInput.value;
@@ -24,21 +30,27 @@ function onSearchPressed(){
     }).then((data)=>{
         console.log(data);
         lastGeniusData = data;
+
+        // clear the container
         elements.resultsContainer.innerHTML = "";
 
+        // loop through the genius data, creating/appending a related button/html element to the container
         for(let i = 0; i < data.response.hits.length; i++){
             var hit = data.response.hits[i].result;
 
+            //todo: probably be better to just pass in just the hit object instead of a bunch of parameters, and let the create function take care of it
             var div = createResultButton(i, hit.artist_names, hit.title, hit.song_art_image_thumbnail_url);
-
             elements.resultsContainer.appendChild(div);
         }
     });
 }
 
+// create an html element to represent the content of one of the genius results
 function createResultButton(index, artist, title, imageUrl){
     var button = document.createElement("button");
     button.setAttribute("class", "flex border-2");
+
+    //set custom data attribute defining what index in the hit results this is
     button.setAttribute("data-genius", index);
 
     //todo: handle broken images
@@ -61,7 +73,9 @@ function createResultButton(index, artist, title, imageUrl){
     return button;
 }
 
+
 function onResultsClick(event){
+    // get the hit results index of whatever we clicked
     var hitIndex = event.target.closest("button").getAttribute("data-genius");
     console.log(hitIndex);
 
@@ -69,9 +83,12 @@ function onResultsClick(event){
         return;
     }
 
+    // grab the result at whatever index it was
     var result = lastGeniusData.response.hits[hitIndex].result;
     console.log (result);
     
+
+    // search spotify based on track and artist
     var parameters = {
         q: `track:${result.title} artist:${result.artist_names}`,
         type: 'track'
@@ -86,6 +103,7 @@ function onResultsClick(event){
 
 }
 
+// this probably isn't needed at all, but it's where i threw in setting the iframe source, so here it is.
 function loadCoverAndLink(data){
     var firstTrack = data.tracks.items[0];
     var albumCover = firstTrack.album.images[1].url;
@@ -106,6 +124,8 @@ function loadCoverAndLink(data){
 }
 
 
-
+//search press
 elements.searchButton.addEventListener("click", onSearchPressed);
+
+//catchall for genius results
 elements.resultsContainer.addEventListener("click", onResultsClick);
