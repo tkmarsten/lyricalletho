@@ -29,23 +29,40 @@ function onSearchPressed(){
         for(let i = 0; i < data.response.hits.length; i++){
             var hit = data.response.hits[i].result;
 
-            var div = createResultDiv(i, hit.artist_names, hit.title);
+            var div = createResultButton(i, hit.artist_names, hit.title, hit.song_art_image_thumbnail_url);
 
             elements.resultsContainer.appendChild(div);
         }
     });
 }
 
-function createResultDiv(index, artist, song){
-    var div = document.createElement("button");
-    div.setAttribute("class", "border-2 h-20 bg-orange-400 pointer-events-auto");
-    div.setAttribute("data-genius", index);
-    div.innerText = `${song} - ${artist}`
-    return div;
+function createResultButton(index, artist, title, imageUrl){
+    var button = document.createElement("button");
+    button.setAttribute("class", "flex border-2");
+    button.setAttribute("data-genius", index);
+
+    //todo: handle broken images
+    var img = document.createElement("img");
+    img.setAttribute("src", imageUrl);
+    img.className = "flex-shrink h-20";
+    button.appendChild(img);
+
+    var textDiv = document.createElement("div");
+
+    var titleh1 = document.createElement("h1");
+    titleh1.innerText = `Title - ${title}`;
+    textDiv.appendChild(titleh1);
+
+    var artisth1 = document.createElement("h1");
+    artisth1.innerText = `Artist - ${artist}`;
+    textDiv.appendChild(artisth1);
+
+    button.appendChild(textDiv);
+    return button;
 }
 
 function onResultsClick(event){
-    var hitIndex = event.target.getAttribute("data-genius");
+    var hitIndex = event.target.closest("button").getAttribute("data-genius");
     console.log(hitIndex);
 
     if (!hitIndex){
@@ -54,7 +71,7 @@ function onResultsClick(event){
 
     var result = lastGeniusData.response.hits[hitIndex].result;
     console.log (result);
-
+    
     var parameters = {
         q: `track:${result.title} artist:${result.artist_names}`,
         type: 'track'
