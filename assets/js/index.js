@@ -49,42 +49,43 @@ function onSearchPressed() {
 
 // create an html element to represent the content of one of the genius results
 function createResultButton(index, artist, title, imageUrl) {
-    var button = document.createElement("button");
-    button.setAttribute("class", "flex border-2");
+
+    var button = document.createElement("div");
+    button.className = "flex-auto border-4 rounded-[30px] h-24 transition ease-in-out delay-150 hover:scale-110 relative duration-300 hover:z-20";
+    button.classList.add("resultButton");
 
     //set custom data attribute defining what index in the hit results this is
     button.setAttribute("data-genius", index);
 
     //todo: handle broken images
     var img = document.createElement("img");
+    img.className = "flex h-20 w-20 rounded-full border-2 border-black absolute -top-3 -left-5 z-1 bg-black";
     img.setAttribute("src", imageUrl);
-    img.className = "flex-shrink h-20";
     button.appendChild(img);
 
-    var textDiv = document.createElement("div");
+    var artisth1 = document.createElement("h1");
+    artisth1.className = "flex h-8 max-w-[65%] rounded-full border-2 border-black m-2 p-1 text-sm truncate ... ml-16";
+    artisth1.innerText = `Artist - ${artist}`;
+    button.appendChild(artisth1);
 
     var titleh1 = document.createElement("h1");
+    titleh1.className = "h-8 flex rounded-full border-2 border-black m-2 p-1 text-sm ml-14";
     titleh1.innerText = `Title - ${title}`;
-    textDiv.appendChild(titleh1);
+    button.appendChild(titleh1);
 
-    var artisth1 = document.createElement("h1");
-    artisth1.innerText = `Artist - ${artist}`;
-    textDiv.appendChild(artisth1);
-
-    button.appendChild(textDiv);
     return button;
 }
 
 function onResultsClick(event) {
     // get the hit results index of whatever we clicked
-    var hitIndex = event.target.closest("button").getAttribute("data-genius");
+    var hitIndex = event.target.closest("div").getAttribute("data-genius");
     console.log(hitIndex);
 
     if (!hitIndex) {
         return;
     }
     //clear the modal content
-    elements.modalContent.innerHTML = "Loading";
+    elements.modalContent.innerText = "Loading";
     elements.modal.style.display = "block";
     fetchAndFillModalContent(hitIndex);
 }
@@ -101,7 +102,7 @@ function fetchAndFillModalContent(hitIndex){
 
     // start off getting spotify data
     var parameters = {
-        q: `track:${title} artist:${artist_names}`,
+        q: `track:${title} artist:${artist}`,
         type: 'track'
     }
     spotify.get("/search", parameters).then((response) => {
@@ -133,10 +134,14 @@ function fetchAndFillModalContent(hitIndex){
                 console.log("got youtube data");
                 console.log(data);
                 var youtubeDiv = document.createElement("div");
-                var id = items[0].id;
+                var id = data.items[0].id.videoId;
                 var url = `https://www.youtube.com/watch?v=${id}`;
                 var a = document.createElement("a");
                 a.setAttribute("href", url);
+                a.setAttribute("target", "_blank");
+                a.innerHTML = "Watch on YouTube";
+                youtubeDiv.appendChild(a);
+                elements.modalContent.appendChild(youtubeDiv);
             })
     });
 
