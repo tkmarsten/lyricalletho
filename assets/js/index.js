@@ -7,6 +7,8 @@ var elements = {
     lyricInput: document.querySelector("#lyricInput"),
     searchButton: document.querySelector("#searchButton"),
     resultsContainer: document.querySelector("#resultsContainer"),
+    modalContent: document.querySelector("#modal-content"),
+    modal: document.querySelector("#modalEl")
 }
 
 // place to store genius search data to use after the search if needed.
@@ -73,7 +75,6 @@ function createResultButton(index, artist, title, imageUrl) {
     return button;
 }
 
-
 function onResultsClick(event) {
     // get the hit results index of whatever we clicked
     var hitIndex = event.target.closest("button").getAttribute("data-genius");
@@ -82,28 +83,68 @@ function onResultsClick(event) {
     if (!hitIndex) {
         return;
     }
+    //clear the modal content
+    elements.modalContent.innerHTML = "Loading";
+    elements.modal.style.display = "block";
+    fetchAndFillModalContent(hitIndex);
+}
 
-    // grab the result at whatever index it was
+function fetchAndFillModalContent(hitIndex){
     var result = lastGeniusData.response.hits[hitIndex].result;
     console.log(result);
 
+    var title = result.title;
+    var artist = result.artist_names;
 
-    // search spotify based on track and artist
+    var spotifyDiv = document.createElement("div");
+    var youtubeDiv = document.createElement("div");
+
+    // start off getting spotify data
     var parameters = {
-        q: `track:${result.title} artist:${result.artist_names}`,
+        q: `track:${title} artist:${artist_names}`,
         type: 'track'
     }
     spotify.get("/search", parameters).then((response) => {
+        console.log("got spotify response");
         console.log(response);
         return response.json();
-    }).then((data) => {
-        console.log(data);
-        loadCoverAndLink(data);
-    })
+        }).then((data) => {
+            console.log("got spotify data")
+            console.log(data);
+            //clear modal and add a spotify iframe
+            elements.modalContent.innerHTML = "";
+            var firstTrack = data.tracks.items[0];
+            var iframe = document.createElement("iframe");
+            iframe.setAttribute("src", `https://open.spotify.com/embed/track/${firstTrack.id}`)
+            spotifyDiv.appendChild(iframe);
+            elements.modalContent.appendChild(spotifyDiv);
+
+            // process youtube data
+            var parameters = {
+                q: `${title} ${artist}`,
+                part: "snippet",
+                maxResults: "5"
+            }
+            youtube.get("/search", parameters).then((response) => {
+                console.log("got youtube response");
+                console.log(response);
+                return response.json();
+            }).then((data) => {
+                console.log("got youtube data");
+                console.log(data);
+                var youtubeDiv = document.createElement("div");
+                var id = items[0].id;
+                var url = `https://www.youtube.com/watch?v=${id}`;
+                var a = document.createElement("a");
+                a.setAttribute("href", url);
+            })
+    });
+
+
 
     searchYoutube(result.title, result.artist_names);
-
 }
+
 
 // this probably isn't needed at all, but it's where i threw in setting the iframe source, so here it is.
 function loadCoverAndLink(data) {
@@ -126,17 +167,7 @@ function loadCoverAndLink(data) {
 }
 
 function searchYoutube(song, artist) {
-    var parameters = {
-        q: `${song} ${artist}`,
-        part: "snippet",
-        maxResults: "20"
-    }
-    youtube.get("/search", parameters).then((response) => {
-        console.log(response);
-        return response.json();
-    }).then((data) => {
-        console.log(data);
-    })
+
 }
 
 //search press
