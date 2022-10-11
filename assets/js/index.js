@@ -7,7 +7,10 @@ var elements = {
     lyricInput: document.querySelector("#lyricInput"),
     searchButton: document.querySelector("#searchButton"),
     resultsContainer: document.querySelector("#resultsContainer"),
-    bottomBox: document.querySelector("#bottomBox")
+    bottomBox: document.querySelector("#bottomBox"),
+    showModalButton: document.querySelector("#showModal"),
+    modal: document.querySelector("#modal"),
+    closeButton: document.querySelector("#close")
 }
 
 // place to store genius search data to use after the search if needed.
@@ -16,6 +19,8 @@ var lastGeniusData;
 // setup the api helpers
 var genius = new Genius("GXl-jB2YMmbsujcZGKUFVHcIzhsZWf3XidKl02rkhtnwjHoWrwNEK8QqsDn73Oje");
 var spotify = new Spotify("3652984d5de34bf48e79cf4623a6d108", "904da68474a34335a798dfef767188ac");
+var youtube = new YouTube("AIzaSyCRA7L4j30R8a3PI1FApVqZO1rzVpDN6WI");
+
 spotify.initialize();
 
 
@@ -101,6 +106,8 @@ function onResultsClick(event){
         loadCoverAndLink(data);
     })
 
+    searchYoutube(result.title, result.artist_names);
+
 }
 
 // this probably isn't needed at all, but it's where i threw in setting the iframe source, so here it is.
@@ -123,9 +130,32 @@ function loadCoverAndLink(data){
     elements.bottomBox.appendChild(a);
 }
 
+function searchYoutube(song, artist){
+    var parameters = {
+        q: `${song} ${artist}`, 
+        part: "snippet", 
+        maxResults: "20"
+    }
+    youtube.get("/search", parameters).then((response)=>{
+        console.log(response);
+        return response.json();
+    }).then((data)=>{
+        console.log(data);
+    })
+}
 
 //search press
 elements.searchButton.addEventListener("click", onSearchPressed);
 
 //catchall for genius results
 elements.resultsContainer.addEventListener("click", onResultsClick);
+
+elements.showModalButton.addEventListener("click", function(){
+    console.log("show clicked");
+    elements.modal.classList.add("show");
+})
+
+elements.closeButton.addEventListener("click", function(){
+    console.log("close clicked");
+    elements.modal.classList.remove("show");
+})

@@ -28,17 +28,23 @@
       }
     }
   </script>
+  <link rel="stylesheet" href="./assets/css/stylesheet.css">
   <title>Testing</title>
 </head>
 
 <body>
+  <div id="modal">
+    <button id="close">Close</button>
+  </div>
   <nav class="bg-clifford text-center p-4">
     <input class="px-4 py-3 rounded-l-lg min-w-[75%]" placeholder="insert lyrics here"></form>
     <button class="rounded-r-lg bg-blue bg-white p-3">search</button>
   </nav>
   <!-- main holding EVERYTHING: color salmon -->
   <main class="bg-primary flex h-screen">
+    
     <!-- white container in middle -->
+
     <div class="flex-auto m-10">
       <p class="m-4 h-10 p-1 text-center">RESULTS</p>
       <!-- div containing music options: black border -->
@@ -106,6 +112,35 @@
           </div>
         </div>
       </div>
+<!--
+    <div class="flex flex-auto flex-col border-2 m-10">
+      <button id="showModal">Show Modal</button>
+        <p class="border-2 m-4 h-10 p-1 text-center">RESULTS</p>
+        <!-- div containing music options: black border -->
+        <div id="resultsContainer" class="grid grid-cols-3 gap-4 content-around m-2 border-2 border-black">
+          <div class="border-2 h-20">01</div>
+          <div class="border-2 h-20">02</div>
+          <div class="border-2 h-20">03</div>
+          <div class="border-2 h-20">05</div>
+          <div class="border-2 h-20">04</div>
+          <div class="border-2 h-20">06</div>
+          <div class="border-2 h-20">07</div>
+          <div class="border-2 h-20">08</div>
+          <div class="border-2 h-20">09</div>
+          <div class="border-2 h-20">10</div>
+          <div class="border-2 h-20">11</div>
+          <div class="border-2 h-20">12</div>
+        </div>
+        
+        <div id="bottomBox" class="flex h-screen m-2 border-2 border-black">
+          <p>bottom box</p>
+          
+        </div>
+        <iframe id="iFrame" width="300" height="380" frameborder="5" allowtransparency="true" allow="encrypted-media"></iframe>
+        <iframe id="ytplayer" width="640" height="360"
+        src="https://www.youtube.com/embed/BTUNP966FS8"
+        frameborder="0"></iframe>
+-->
     </div>
   </main>
 
