@@ -7,13 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+  <script src="./assets/css/style.css"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            clifford: '#da373d',
-            primary: '#ff685d',
+            clifford: '#2f2f2f',
+            primary: '#ffffff',
             screens: {
               'tablet': '640px',
               // => @media (min-width: 640px) { ... }
@@ -32,40 +33,83 @@
 
 <body>
   <nav class="bg-clifford text-center p-4">
-    <input id="lyricInput" class="px-4 py-3 rounded-l-lg min-w-[75%]" placeholder="insert lyrics here"></form>
-    <button id="searchButton" class="rounded-r-lg bg-blue bg-white p-3">search</button>
+    <input class="px-4 py-3 rounded-l-lg min-w-[75%]" placeholder="insert lyrics here"></form>
+    <button class="rounded-r-lg bg-blue bg-white p-3">search</button>
   </nav>
   <!-- main holding EVERYTHING: color salmon -->
   <main class="bg-primary flex h-screen">
     <!-- white container in middle -->
-    <div class="flex flex-auto flex-col border-2 m-10">
-        <p class="border-2 m-4 h-10 p-1 text-center">RESULTS</p>
-        <!-- div containing music options: black border -->
-        <div id="resultsContainer" class="grid grid-cols-3 gap-4 content-around m-2 border-2 border-black">
-          <div class="border-2 h-20">01</div>
-          <div class="border-2 h-20">02</div>
-          <div class="border-2 h-20">03</div>
-          <div class="border-2 h-20">05</div>
-          <div class="border-2 h-20">04</div>
-          <div class="border-2 h-20">06</div>
-          <div class="border-2 h-20">07</div>
-          <div class="border-2 h-20">08</div>
-          <div class="border-2 h-20">09</div>
-          <div class="border-2 h-20">10</div>
-          <div class="border-2 h-20">11</div>
-          <div class="border-2 h-20">12</div>
+    <div class="flex-auto m-10">
+      <p class="m-4 h-10 p-1 text-center">RESULTS</p>
+      <!-- div containing music options: black border -->
+      <div class="grid grid-cols-4 gap-4 content-around m-2">
+        <div class="h-10 border-2 rounded">01</div>
+      </div>
+
+      <button id="show-modal">Show modal</button>
+
+      <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="modalEl">
+        <!--
+          Background backdrop, show/hide based on modal state.
+      
+          Entering: "ease-out duration-300"
+            From: "opacity-0"
+            To: "opacity-100"
+          Leaving: "ease-in duration-200"
+            From: "opacity-100"
+            To: "opacity-0"
+        -->
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+          <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+            <!--
+              Modal panel, show/hide based on modal state.
+      
+              Entering: "ease-out duration-300"
+                From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                To: "opacity-100 translate-y-0 sm:scale-100"
+              Leaving: "ease-in duration-200"
+                From: "opacity-100 translate-y-0 sm:scale-100"
+                To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            -->
+            <div
+              class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+              <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                  <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <div class="flex justify-between items-start p-5 rounded-t">
+                      <button type="button" id="close-button"
+                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clip-rule="evenodd"></path>
+                        </svg>
+                      </button>
+                    </div>
+                    <div class="mt-2">
+                      <iframe style="border-radius:12px" class="mb-3"
+                        src="https://open.spotify.com/embed/track/60y3oBiHHIlOzUFZRWP6Ak?utm_source=generator&theme=0"
+                        width="100%" height="152" frameBorder="0" allowfullscreen=""
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                        loading="lazy"></iframe>
+                      <iframe width="560" height="315" src="https://www.youtube.com/embed/A8_7Hlbshg0"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        
-        <div id="bottomBox" class="flex h-screen m-2 border-2 border-black">
-          <p>bottom box</p>
-          
-        </div>
-        <iframe id="iFrame" width="300" height="380" frameborder="5" allowtransparency="true" allow="encrypted-media"></iframe>
+      </div>
     </div>
   </main>
 
-  <script type="module" src="./assets/js/api-helpers.js"></script>
-  <script type="module" src="./assets/js/index.js"></script>
+  <script src="./assets/js/script.js"></script>
 </body>
 
 </html>
