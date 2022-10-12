@@ -67,7 +67,7 @@ export class YouTube{
      * @returns {Promise<Response>} a response promise
      */
     getRaw(path){
-        return fetch(this._baseUrl + path + `key=${this._apiKey}`)
+        return fetch(this._baseUrl + path + `key=${this._apiKey}`);
     }
 
     /**
