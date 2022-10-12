@@ -100,6 +100,7 @@ function fetchAndFillModalContent(hitIndex) {
 
     var spotifyDiv = document.createElement("div");
     var youtubeDiv = document.createElement("div");
+    elements.modalContent.innerHTML = "";
 
     // start off getting spotify data
     var parameters = {
@@ -109,17 +110,21 @@ function fetchAndFillModalContent(hitIndex) {
     spotify.get("/search", parameters).then((response) => {
         console.log("got spotify response");
         console.log(response);
-        return response.json();
+        return response.ok ? response.json() : null;
     }).then((data) => {
-        console.log("got spotify data")
-        console.log(data);
-        //clear modal and add a spotify iframe
-        elements.modalContent.innerHTML = "";
-        var firstTrack = data.tracks.items[0];
-        var iframe = document.createElement("iframe");
-        iframe.setAttribute("src", `https://open.spotify.com/embed/track/${firstTrack.id}`)
-        spotifyDiv.appendChild(iframe);
-        elements.modalContent.appendChild(spotifyDiv);
+
+        // parse and fill spotify data if the response was good
+        if (data != null){
+            console.log("got spotify data")
+            console.log(data);
+
+            var firstTrack = data.tracks.items[0];
+            var iframe = document.createElement("iframe");
+            iframe.setAttribute("src", `https://open.spotify.com/embed/track/${firstTrack.id}`)
+            spotifyDiv.appendChild(iframe);
+            elements.modalContent.appendChild(spotifyDiv);
+        }
+
 
         // process youtube data
         var parameters = {
@@ -130,51 +135,27 @@ function fetchAndFillModalContent(hitIndex) {
         youtube.get("/search", parameters).then((response) => {
             console.log("got youtube response");
             console.log(response);
-            return response.json();
+            return response.ok ? response.json() : null;
         }).then((data) => {
-            console.log("got youtube data");
-            console.log(data);
-            youtubeDiv = document.createElement("div");
-            var id = data.items[0].id.videoId;
-            var url = `https://www.youtube.com/watch?v=${id}`;
-            var a = document.createElement("a");
-            a.setAttribute("href", url);
-            a.setAttribute("target", "_blank");
-            a.innerHTML = "Watch on YouTube";
-            youtubeDiv.appendChild(a);
-            elements.modalContent.appendChild(youtubeDiv);
+
+            // parse and fill youtube data if the response was good
+            if (data != null){
+                console.log("got youtube data");
+                console.log(data);
+                youtubeDiv = document.createElement("div");
+                var id = data.items[0].id.videoId;
+                var url = `https://www.youtube.com/watch?v=${id}`;
+                var a = document.createElement("a");
+                a.setAttribute("href", url);
+                a.setAttribute("target", "_blank");
+                a.innerHTML = "Watch on YouTube";
+                youtubeDiv.appendChild(a);
+                elements.modalContent.appendChild(youtubeDiv);
+            }
         })
     });
-
-
-
-    searchYoutube(result.title, result.artist_names);
 }
 
-
-// this probably isn't needed at all, but it's where i threw in setting the iframe source, so here it is.
-function loadCoverAndLink(data) {
-    var firstTrack = data.tracks.items[0];
-    var albumCover = firstTrack.album.images[1].url;
-    var link = firstTrack.external_urls.spotify;
-    document.querySelector("#iFrame").setAttribute("src", `https://open.spotify.com/embed/track/${firstTrack.id}`);
-
-    var a = document.createElement("a");
-    a.setAttribute("href", link);
-    a.setAttribute("target", "_blank");
-
-    var img = document.createElement("img");
-    img.setAttribute("src", albumCover);
-
-    a.appendChild(img);
-
-    elements.bottomBox.innerHTML = "";
-    elements.bottomBox.appendChild(a);
-}
-
-function searchYoutube(song, artist) {
-
-}
 
 //search press
 elements.searchButton.addEventListener("click", onSearchPressed);
