@@ -183,4 +183,5 @@ let closeButton = document.getElementById('close-button')
 
 closeButton.addEventListener('click', function () {
     elements.modal.style.display = 'none'
+    elements.modalContent.innerHTML = ""; // clear this on close so iframe is removed and spotify doesn't keep playing music
 })
