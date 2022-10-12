@@ -48,7 +48,7 @@ function onSearchPressed() {
             var div = createResultButton(i, hit.artist_names, hit.title, hit.song_art_image_thumbnail_url);
             elements.resultsContainer.appendChild(div);
         }
-        elements.resultsSpinner.display = "none";
+        elements.resultsSpinner.style.display = "none";
     });
 }
 
@@ -104,7 +104,7 @@ function fetchAndFillModalContent(hitIndex) {
     var artist = result.artist_names;
     artist = artist.split("(")[0];
 
-    var spotifyDiv = document.createElement("div");
+
     var youtubeDiv = document.createElement("div");
     elements.modalContent.innerHTML = "";
 
@@ -120,15 +120,20 @@ function fetchAndFillModalContent(hitIndex) {
     }).then((data) => {
 
         // parse and fill spotify data if the response was good
-        if (data != null){
+        if (data == null || data.tracks.items.length<1){
+            var h3 = document.createElement("h3");
+            h3.innerText = "No Spotify Results";
+            elements.modalContent.appendChild(h3);
+
+        }else{
             console.log("got spotify data")
             console.log(data);
 
             var firstTrack = data.tracks.items[0];
             var iframe = document.createElement("iframe");
             iframe.setAttribute("src", `https://open.spotify.com/embed/track/${firstTrack.id}`)
-            spotifyDiv.appendChild(iframe);
-            elements.modalContent.appendChild(spotifyDiv);
+            iframe.className = "h-40 w-96";
+            elements.modalContent.appendChild(iframe);
         }
 
 
@@ -157,6 +162,10 @@ function fetchAndFillModalContent(hitIndex) {
                 a.innerHTML = "Watch on YouTube";
                 youtubeDiv.appendChild(a);
                 elements.modalContent.appendChild(youtubeDiv);
+            }else{
+                var h3 = document.createElement("h3");
+                h3.innerText = "No YouTube Results";
+                elements.modalContent.appendChild(h3);
             }
             elements.modalSpinner.style.display = "none";
         })
