@@ -8,7 +8,10 @@ var elements = {
     searchButton: document.querySelector("#searchButton"),
     resultsContainer: document.querySelector("#resultsContainer"),
     modalContent: document.querySelector("#modal-content"),
-    modal: document.querySelector("#modalEl")
+    modal: document.querySelector("#modalEl"),
+    modalSpinner: document.querySelector("#modalSpinner"),
+    resultsSpinner: document.querySelector("#resultsSpinner")
+
 }
 
 // place to store genius search data to use after the search if needed.
@@ -22,6 +25,7 @@ spotify.initialize();
 
 
 function onSearchPressed() {
+    elements.resultsSpinner.style.display = "inline";
     var input = elements.lyricInput.value;
     var parameters = {
         q: input
@@ -44,6 +48,7 @@ function onSearchPressed() {
             var div = createResultButton(i, hit.artist_names, hit.title, hit.song_art_image_thumbnail_url);
             elements.resultsContainer.appendChild(div);
         }
+        elements.resultsSpinner.display = "none";
     });
 }
 
@@ -51,7 +56,7 @@ function onSearchPressed() {
 function createResultButton(index, artist, title, imageUrl) {
 
     var button = document.createElement("div");
-    button.className = "flex-auto rounded-[30px] bg-gray-200 h-24 transition ease-in-out delay-150 hover:scale-110 relative duration-300 hover:z-20";
+    button.className = "flex-auto rounded-[30px] bg-gray-200 h-24 transition ease-in-out delay-150 hover:scale-110 relative duration-300 hover:z-5";
     button.classList.add("resultButton");
 
     //set custom data attribute defining what index in the hit results this is
@@ -84,6 +89,7 @@ function onResultsClick(event) {
     if (!hitIndex) {
         return;
     }
+    elements.modalSpinner.style.display = "inline";
     //clear the modal content
     elements.modalContent.innerText = "Loading";
     elements.modal.style.display = "block";
@@ -152,6 +158,7 @@ function fetchAndFillModalContent(hitIndex) {
                 youtubeDiv.appendChild(a);
                 elements.modalContent.appendChild(youtubeDiv);
             }
+            elements.modalSpinner.style.display = "none";
         })
     });
 }
