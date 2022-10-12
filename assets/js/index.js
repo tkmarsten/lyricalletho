@@ -56,7 +56,7 @@ function onSearchPressed() {
 function createResultButton(index, artist, title, imageUrl) {
 
     var button = document.createElement("div");
-    button.className = "flex-auto rounded-[30px] bg-gray-200 h-24 transition ease-in-out delay-150 hover:scale-110 relative duration-300 hover:z-5";
+    button.className = "flex-auto rounded-[30px] bg-gray-200 h-24 transition ease-in-out hover:scale-110 relative duration-300 hover:z-5";
     button.classList.add("resultButton");
 
     //set custom data attribute defining what index in the hit results this is
