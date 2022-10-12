@@ -133,7 +133,7 @@ function fetchAndFillModalContent(hitIndex){
             }).then((data) => {
                 console.log("got youtube data");
                 console.log(data);
-                var youtubeDiv = document.createElement("div");
+                youtubeDiv = document.createElement("div");
                 var id = data.items[0].id.videoId;
                 var url = `https://www.youtube.com/watch?v=${id}`;
                 var a = document.createElement("a");
