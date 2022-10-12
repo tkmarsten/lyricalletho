@@ -96,6 +96,7 @@ function fetchAndFillModalContent(hitIndex){
 
     var title = result.title;
     var artist = result.artist_names;
+    artist = artist.split("(")[0];
 
     var spotifyDiv = document.createElement("div");
     var youtubeDiv = document.createElement("div");
