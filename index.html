@@ -7,59 +7,99 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+  <script src="./assets/css/style.css"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          colors: {
-            clifford: '#da373d',
-            primary: '#ff685d',
-            screens: {
-              'tablet': '640px',
-              // => @media (min-width: 640px) { ... }
-              'laptop': '1024px',
-              // => @media (min-width: 1024px) { ... }
-              'desktop': '1280px',
-              // => @media (min-width: 1280px) { ... }
+          transitionProperty: {
+            'width': 'width',
+            colors: {
+              primary: '#ffffff',
+              secondary: '#2f2f2f',
+              screens: {
+                'sm': '640px',
+                // => @media (min-width: 640px) { ... }
+
+                'md': '768px',
+                // => @media (min-width: 768px) { ... }
+
+                'lg': '1024px',
+                // => @media (min-width: 1024px) { ... }
+
+                'xl': '1280px',
+                // => @media (min-width: 1280px) { ... }
+
+                '2xl': '1536px',
+                // => @media (min-width: 1536px) { ... }
+              }
             }
           }
         }
       }
     }
   </script>
-  <title>Testing</title>
+  <title>Music Finder</title>
 </head>
 
 <body>
   <nav class="bg-clifford text-center p-4">
-    <input class="px-4 py-3 rounded-l-lg min-w-[75%]" placeholder="insert lyrics here"></form>
-    <button class="rounded-r-lg bg-blue bg-white p-3">search</button>
+    <input class="px-4 py-3 rounded-l-lg min-w-[75%]" placeholder="insert lyrics here" id="lyricInput"></form>
+    <button class="rounded-r-lg bg-blue bg-white p-3" id="searchButton">search</button>
   </nav>
-  <!-- main holding EVERYTHING: color salmon -->
+  <!-- main holding EVERYTHING -->
   <main class="bg-primary flex h-screen">
-    <!-- white container in middle -->
-    <div class="flex-auto border-2 m-10">
-          <p class="border-2 m-4 h-10 p-1 text-center">RESULTS</p>
-          <!-- div containing music options: black border -->
-          <div class="grid grid-cols-4 gap-4 content-around m-2 border-2 border-black">
-            <div class="border-2 h-20">01</div>
-            <div class="border-2 h-20">02</div>
-            <div class="border-2 h-20">03</div>
-            <div class="border-2 h-20">04</div>
-            <div class="border-2 h-20">05</div>
-            <div class="border-2 h-20">05</div>
-            <div class="border-2 h-20">05</div>
-            <div class="border-2 h-20">05</div>
-            <div class="border-2 h-20">05</div>
-            <div class="border-2 h-20">05</div>
-            <div class="border-2 h-20">05</div>
-            <div class="border-2 h-20">05</div>
-          </div>
-          <div class="h-full m-2 flex border-2 border-black">
 
+    <div class="flex flex-auto flex-col ml-20 mr-10">
+
+      <div id="resultsContainer" class="grid grid-cols-1 gap-12 content-around m-2 lg:grid-cols-2 xl:grid-cols-3">
+        <!--
+        <div
+          class="flex-auto border-4 rounded-[30px] h-32 transition ease-in-out delay-150 hover:scale-110 duration-300 relative hover:z-20">
+          <div class="flex h-24 w-24 rounded-full border-2 border-black absolute -top-6 -left-10 bg-black">
           </div>
-    </div>
+          <div class="flex-auto h-12 ml-16 rounded-full border-2 border-black m-2 p-3 text-sm truncate ...">
+            <p>Artist: </p>
+          </div>
+          <div class="flex-auto h-12 ml-8 rounded-full border-2 border-black m-2 p-3 text-sm truncate ...">
+            <p>Song Title:</p>
+          </div>
+      </div>
+    -->
+      </div>
+      <div class="flex-auto m-10">
+        <div class="relative hidden z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="modalEl">
+          <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+          <div class="fixed inset-0 z-10 overflow-y-auto">
+            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+              <div class="relative transform flex rounded-lg bg-white text-left shadow-xl transition-all sm:my-8">
+                <div class="bg-white rounded-[10px] px-6 pt-2 pb-4">
+                  <div class="flex justify-between items-start rounded-t">
+                    <button type="button" id="close-button"
+                      class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                          clip-rule="evenodd"></path>
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="mt-2 flex flex-col" id="modal-content">
+                    <iframe style="border-radius:12px" class="mb-3" src="" width="100%" height="152" frameBorder="0"
+                      allowfullscreen=""
+                      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                      loading="lazy"></iframe>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
   </main>
+
+  <script type="module" src="./assets/js/api-helpers.js"></script>
+  <script type="module" src="./assets/js/index.js"></script>
 </body>
 
 </html>
