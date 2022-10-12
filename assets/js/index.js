@@ -181,3 +181,9 @@ elements.searchButton.addEventListener("click", onSearchPressed);
 
 //catchall for genius results
 elements.resultsContainer.addEventListener("click", onResultsClick);
+
+let closeButton = document.getElementById('close-button')
+
+closeButton.addEventListener('click', function () {
+    elements.modal.style.display = 'none'
+})
