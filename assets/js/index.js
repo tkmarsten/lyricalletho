@@ -51,7 +51,7 @@ function onSearchPressed() {
 function createResultButton(index, artist, title, imageUrl) {
 
     var button = document.createElement("div");
-    button.className = "flex-auto border-4 rounded-[30px] h-24 transition ease-in-out delay-150 hover:scale-110 relative duration-300 hover:z-20";
+    button.className = "flex-auto rounded-[30px] bg-gray-200 h-24 transition ease-in-out delay-150 hover:scale-110 relative duration-300 hover:z-20";
     button.classList.add("resultButton");
 
     //set custom data attribute defining what index in the hit results this is
@@ -63,15 +63,15 @@ function createResultButton(index, artist, title, imageUrl) {
     img.setAttribute("src", imageUrl);
     button.appendChild(img);
 
-    var artisth1 = document.createElement("h1");
-    artisth1.className = "flex h-8 max-w-[65%] rounded-full border-2 border-black m-2 p-1 text-sm truncate ... ml-16";
-    artisth1.innerText = `Artist - ${artist}`;
-    button.appendChild(artisth1);
-
     var titleh1 = document.createElement("h1");
-    titleh1.className = "h-8 flex rounded-full border-2 border-black m-2 p-1 text-sm ml-14";
-    titleh1.innerText = `Title - ${title}`;
+    titleh1.className = "flex h-8 max-w-[65%] rounded-full m-2 p-1 text-sm truncate ... ml-16";
+    titleh1.innerText = `${title}`;
     button.appendChild(titleh1);
+
+    var artisth1 = document.createElement("h1");
+    artisth1.className = "h-8 flex rounded-full m-2 p-1 text-sm ml-14 italic";
+    artisth1.innerText = `${artist}`;
+    button.appendChild(artisth1);
 
     return button;
 }
@@ -90,7 +90,7 @@ function onResultsClick(event) {
     fetchAndFillModalContent(hitIndex);
 }
 
-function fetchAndFillModalContent(hitIndex){
+function fetchAndFillModalContent(hitIndex) {
     var result = lastGeniusData.response.hits[hitIndex].result;
     console.log(result);
 
@@ -109,40 +109,40 @@ function fetchAndFillModalContent(hitIndex){
         console.log("got spotify response");
         console.log(response);
         return response.json();
-        }).then((data) => {
-            console.log("got spotify data")
-            console.log(data);
-            //clear modal and add a spotify iframe
-            elements.modalContent.innerHTML = "";
-            var firstTrack = data.tracks.items[0];
-            var iframe = document.createElement("iframe");
-            iframe.setAttribute("src", `https://open.spotify.com/embed/track/${firstTrack.id}`)
-            spotifyDiv.appendChild(iframe);
-            elements.modalContent.appendChild(spotifyDiv);
+    }).then((data) => {
+        console.log("got spotify data")
+        console.log(data);
+        //clear modal and add a spotify iframe
+        elements.modalContent.innerHTML = "";
+        var firstTrack = data.tracks.items[0];
+        var iframe = document.createElement("iframe");
+        iframe.setAttribute("src", `https://open.spotify.com/embed/track/${firstTrack.id}`)
+        spotifyDiv.appendChild(iframe);
+        elements.modalContent.appendChild(spotifyDiv);
 
-            // process youtube data
-            var parameters = {
-                q: `${title} ${artist}`,
-                part: "snippet",
-                maxResults: "5"
-            }
-            youtube.get("/search", parameters).then((response) => {
-                console.log("got youtube response");
-                console.log(response);
-                return response.json();
-            }).then((data) => {
-                console.log("got youtube data");
-                console.log(data);
-                youtubeDiv = document.createElement("div");
-                var id = data.items[0].id.videoId;
-                var url = `https://www.youtube.com/watch?v=${id}`;
-                var a = document.createElement("a");
-                a.setAttribute("href", url);
-                a.setAttribute("target", "_blank");
-                a.innerHTML = "Watch on YouTube";
-                youtubeDiv.appendChild(a);
-                elements.modalContent.appendChild(youtubeDiv);
-            })
+        // process youtube data
+        var parameters = {
+            q: `${title} ${artist}`,
+            part: "snippet",
+            maxResults: "5"
+        }
+        youtube.get("/search", parameters).then((response) => {
+            console.log("got youtube response");
+            console.log(response);
+            return response.json();
+        }).then((data) => {
+            console.log("got youtube data");
+            console.log(data);
+            youtubeDiv = document.createElement("div");
+            var id = data.items[0].id.videoId;
+            var url = `https://www.youtube.com/watch?v=${id}`;
+            var a = document.createElement("a");
+            a.setAttribute("href", url);
+            a.setAttribute("target", "_blank");
+            a.innerHTML = "Watch on YouTube";
+            youtubeDiv.appendChild(a);
+            elements.modalContent.appendChild(youtubeDiv);
+        })
     });
 
 
