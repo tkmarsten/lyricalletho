@@ -85,13 +85,13 @@ function createResultButton(index, artist, title, imageUrl) {
 
     //the title
     var titleh1 = document.createElement("h1");
-    titleh1.className = "flex-auto h-12 ml-16 rounded-full m-2 p-3 text-md truncate ...";
+    titleh1.className = "flex-auto h-12 ml-16 rounded-full m-2 p-3 text-xl truncate ...";
     titleh1.innerText = `${title}`;
     button.appendChild(titleh1);
 
     //the artist
     var artisth1 = document.createElement("h1");
-    artisth1.className = "flex-auto h-12 ml-8 rounded-full m-2 p-3 text-md truncate ... italic";
+    artisth1.className = "flex-auto h-12 ml-8 rounded-full m-2 p-3 text-lg truncate ... italic";
     artisth1.innerText = `${artist}`;
     button.appendChild(artisth1);
 
