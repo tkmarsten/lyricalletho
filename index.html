@@ -12,11 +12,11 @@
     tailwind.config = {
       theme: {
         extend: {
-          transitionProperty: {
-            'width': 'width',
             colors: {
-              primary: '#ffffff',
-              secondary: '#2f2f2f',
+              primary: '#F5F2F8',
+              secondary: '#474973',
+              tertiary: '#E0D7EA',
+              quaternary: '#0D0C1D',
               screens: {
                 'sm': '640px',
                 // => @media (min-width: 640px) { ... }
@@ -37,20 +37,20 @@
           }
         }
       }
-    }
+
   </script>
   <title>Music Finder</title>
 </head>
 
 <body>
-  <nav class="bg-gray-500 text-center p-4">
+  <nav class="bg-secondary text-center p-4">
     <input class="px-4 py-3 rounded-l-lg min-w-[75%]" placeholder="insert lyrics, title, or artist" id="lyricInput"></form>
     <button class="rounded-r-lg bg-blue bg-white p-3" id="searchButton">search</button>
   </nav>
   <!-- main holding EVERYTHING -->
-  <main class="bg-primary flex">
+  <main class="bg-primary flex h-screen">
 
-    <div class="flex flex-auto flex-col ml-20 mr-10 items-center">
+    <div class="flex flex-auto flex-col ml-20 mr-10 pt-10">
 
       <svg id="resultsSpinner" aria-hidden="true" class="mr-2 w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600 hidden"
         viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -62,20 +62,19 @@
           fill="currentFill" />
       </svg>
 
-      <div id="resultsContainer" class="grid grid-cols-1 gap-12 content-around m-2 lg:grid-cols-2 xl:grid-cols-3">
-        <!--
-        <div
-          class="flex-auto border-4 rounded-[30px] h-32 transition ease-in-out delay-150 hover:scale-110 duration-300 relative hover:z-20">
-          <div class="flex h-24 w-24 rounded-full border-2 border-black absolute -top-6 -left-10 bg-black">
-          </div>
-          <div class="flex-auto h-12 ml-16 rounded-full border-2 border-black m-2 p-3 text-sm truncate ...">
+      <div id="resultsContainer" class="grid grid-cols-1 gap-12 content-around m-2 lg:grid-cols-2 lg:gap-x-24 xl:grid-cols-3">
+        
+      <!-- <div class="flex-auto bg-tertiary rounded-[30px] h-32 transition ease-in-out delay-150 hover:scale-110 duration-300 relative hover:z-20">
+        <div class="flex h-24 w-24 rounded-full border-4 border-black absolute -top-6 -left-10 bg-quaternary">
+        </div>
+        <div class="flex-auto h-12 ml-16 rounded-full m-2 p-3 text-md truncate ...">
             <p>Artist: </p>
-          </div>
-          <div class="flex-auto h-12 ml-8 rounded-full border-2 border-black m-2 p-3 text-sm truncate ...">
+        </div>
+        <div class="flex-auto h-12 ml-8 rounded-full m-2 p-3 text-md truncate ...">
             <p>Song Title:</p>
-          </div>
-      </div>
-    -->
+        </div>
+      </div> -->
+   
       </div>
       <div class="flex-auto m-10">
         <div class="relative hidden z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="modalEl">
