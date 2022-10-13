@@ -100,7 +100,7 @@ function onResultsClick(event) {
     if (!hitIndex) {
         return;
     }
-    elements.modalSpinner.style.display = "inline";
+    elements.modalSpinner.classList.remove("hidden");
     //clear the modal content
     elements.modalContent.innerText = "Loading";
     elements.modal.style.display = "block";
@@ -218,7 +218,7 @@ function fetchAndFillModalContent(hitIndex) {
         elements.modalContent.appendChild(a);
 
         // hide the spinner
-        elements.modalSpinner.style.display = "none";
+        elements.modalSpinner.classList.add("hidden");
     });
 }
 
