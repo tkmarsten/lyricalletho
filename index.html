@@ -43,10 +43,40 @@
 </head>
 
 <body>
-  <nav class="bg-gray-500 text-center p-4">
-    <input class="px-4 py-3 rounded-l-lg min-w-[75%]" placeholder="insert lyrics, title, or artist" id="lyricInput"></form>
+  <nav class="bg-gray-500 text-center p-4 flex flex-nowrap justify-center">
+    <input class="px-4 py-3 rounded-l-lg min-w-[66%]" placeholder="insert lyrics, title, or artist" id="lyricInput"></form>
     <button class="rounded-r-lg bg-blue bg-white p-3" id="searchButton">search</button>
+    <button id="historyButton" class="bg-white p-3 rounded-lg ml-2">History</button>
+
+    
   </nav>
+
+  <div id="historyModal" class="flex justify-center items-center fixed bg-gray-500 bg-opacity-75 w-screen h-screen top-0 left-0 z-50">
+    <div id="historyPanel" class="flex flex-col max-h-3/4 border border-black rounded-md bg-white p-2 pt-0 z-50">
+      <div class="flex justify-between">
+        <h3 class="whitespace-nowrap p-2 text-center inline">Recent Spotify Favorites</h3>
+        <button id="favoritesClose" class="inline">X</button>
+      </div>
+      
+      <div id="historyContent" class="rounded-md bg-gray-200 p-2 overflow-y-auto overflow-x-hidden">
+        <iframe style="border-radius:12px" class="h-24"
+        src="https://open.spotify.com/embed/track/23qnota5Iyg4f9LNdNIC1D"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"></iframe>
+        <iframe style="border-radius:12px" class="h-24"
+        src="https://open.spotify.com/embed/track/23qnota5Iyg4f9LNdNIC1D"
+        allowfullscreen=""
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"></iframe>
+        <iframe style="border-radius:12px" class="h-24"
+        src="https://open.spotify.com/embed/track/23qnota5Iyg4f9LNdNIC1D"
+        allowfullscreen=""
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"></iframe>
+      </div>
+    </div>
+  </div>
+
   <!-- main holding EVERYTHING -->
   <main class="bg-primary flex">
 
