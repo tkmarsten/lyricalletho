@@ -13,7 +13,8 @@ var elements = {
     historyButton: document.querySelector("#historyButton"),
     historyContent: document.querySelector("#historyContent"),
     favoritesCloseButton: document.querySelector("#favoritesClose"),
-    historyModal: document.querySelector("#historyModal")
+    historyModal: document.querySelector("#historyModal"),
+    paragraph: document.querySelector("#paragraph")
 }
 
 // Place to store genius search data to use after the search if needed.
@@ -31,9 +32,14 @@ spotify.initialize();
  * each hit, clearing the results container and adding the new elements to the container.
  */
 function onSearchPressed() {
-    elements.resultsSpinner.style.display = "inline"; //get that spinner going!
-
     var input = elements.lyricInput.value; // our search value from the input
+    if (!input){
+        return;
+    }
+    elements.resultsSpinner.style.display = "inline"; //get that spinner going!
+    paragraph.remove();
+    
+
     var parameters = {
         q: input
     }

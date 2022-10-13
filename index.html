@@ -42,7 +42,7 @@
   <title>LyricalLetho</title>
 </head>
 
-<body>
+<body class="bg-primary">
 
   <header class="bg-secondary text-center p-4">
     <h1 class="text-5xl mb-5 text-white">LyricalLetho</h1>
@@ -52,8 +52,9 @@
       </form>
       <button id="historyButton" class="bg-white p-3 rounded-lg ml-2">Favorites</button>
   </header>
+  
 
-  <div id="historyModal" class="flex justify-center items-center fixed bg-gray-500 bg-opacity-75 w-screen h-screen top-0 left-0 z-50">
+  <div id="historyModal" class="flex justify-center items-center fixed bg-gray-500 bg-opacity-75 w-screen h-screen top-0 left-0 z-50 hidden">
     <div id="historyPanel" class="flex flex-col max-h-3/4 border border-black rounded-md bg-secondary p-2 pt-0 z-50">
       <div class="flex justify-between">
         <h3 class="whitespace-nowrap p-2 text-center inline text-white">Recent Spotify Favorites</h3>
@@ -116,12 +117,12 @@
       <p class="text-center -ml-10" id="paragraph">Type lyrics, song / album title, or artist to find what you're looking for! Click on the star when you click
       on a result to save up to five results!</p>
       <div class="flex-auto m-10">
-        <div class="relative hidden z-30" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="modalEl">
+        <div class="relative z-30" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="modalEl">
           <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
           <div class="fixed inset-0 z-30 overflow-y-auto">
             <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
               <div class="relative transform flex rounded-lg bg-white text-left shadow-xl transition-all sm:my-8">
-                <div class="bg-white rounded-[10px] px-6 pt-2 pb-4 text-center">
+                <div class="bg-secondary rounded-[10px] px-6 pt-2 pb-4 text-center">
                   <div class="flex justify-between items-start rounded-t">
                     <button type="button" id="close-button"
                       class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
