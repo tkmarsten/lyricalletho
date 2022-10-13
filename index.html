@@ -46,21 +46,21 @@
 
   <header class="bg-secondary text-center p-4">
     <h1 class="text-5xl mb-5 text-white">LyricalLetho</h1>
-    <form class="search-form">
-      <input class="px-4 py-3 rounded-l-lg min-w-[75%]" placeholder="Insert lyrics, title, or artist" id="lyricInput">
-      <button class="rounded-r-lg bg-blue bg-white p-3" id="searchButton">Search</button>
-    </form>
-    <button id="historyButton" class="bg-white p-3 rounded-lg ml-2">Favorites</button>
+      <form class="search-form inline">
+        <input class="px-4 py-3 rounded-l-lg min-w-[75%]" placeholder="Insert lyrics, title, or artist" id="lyricInput">
+        <button class="rounded-r-lg bg-blue bg-white p-3" id="searchButton">Search</button>
+      </form>
+      <button id="historyButton" class="bg-white p-3 rounded-lg ml-2">Favorites</button>
   </header>
 
   <div id="historyModal" class="flex justify-center items-center fixed bg-gray-500 bg-opacity-75 w-screen h-screen top-0 left-0 z-50">
-    <div id="historyPanel" class="flex flex-col max-h-3/4 border border-black rounded-md bg-white p-2 pt-0 z-50">
+    <div id="historyPanel" class="flex flex-col max-h-3/4 border border-black rounded-md bg-secondary p-2 pt-0 z-50">
       <div class="flex justify-between">
-        <h3 class="whitespace-nowrap p-2 text-center inline">Recent Spotify Favorites</h3>
-        <button id="favoritesClose" class="inline">X</button>
+        <h3 class="whitespace-nowrap p-2 text-center inline text-white">Recent Spotify Favorites</h3>
+        <button id="favoritesClose" class="inline text-white">X</button>
       </div>
       
-      <div id="historyContent" class="rounded-md bg-gray-200 p-2 overflow-y-auto overflow-x-hidden">
+      <div id="historyContent" class="rounded-md bg-primary p-2 overflow-y-auto overflow-x-hidden">
         <iframe style="border-radius:12px" class="h-24"
         src="https://open.spotify.com/embed/track/23qnota5Iyg4f9LNdNIC1D"
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
