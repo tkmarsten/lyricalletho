@@ -53,7 +53,7 @@
   <!-- main holding EVERYTHING -->
   <main class="bg-primary flex h-screen">
 
-    <div class="flex flex-auto flex-col ml-20 mr-10 pt-10">
+    <div class="flex flex-auto flex-col ml-20 mr-10 pt-10 items-center">
 
       <svg id="resultsSpinner" aria-hidden="true"
         class="mr-2 w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600 hidden" viewBox="0 0 100 101"
@@ -80,9 +80,9 @@
           </div>
       </div>
     -->
-        <p>Type lyrics, song / album title, or artist to find what you're looking for! Click on the star when you click
-          on a result to save up to five results!</p>
       </div>
+      <p class="text-center -ml-10" id="paragraph">Type lyrics, song / album title, or artist to find what you're looking for! Click on the star when you click
+      on a result to save up to five results!</p>
       <div class="flex-auto m-10">
         <div class="relative hidden z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="modalEl">
           <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
