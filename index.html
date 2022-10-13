@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
-  <script src="./assets/css/style.css"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -39,11 +38,11 @@
     }
 
   </script>
+  <link rel="stylesheet" href="./assets/css/style.css">
   <title>LyricalLetho</title>
 </head>
 
 <body class="bg-primary">
-
   <header class="bg-secondary text-center p-4">
     <h1 class="text-5xl mb-5 text-white">LyricalLetho</h1>
       <form class="search-form inline">
@@ -60,7 +59,7 @@
         <h3 class="whitespace-nowrap p-2 text-center inline text-white">Recent Spotify Favorites</h3>
         <button id="favoritesClose" class="inline text-white">X</button>
       </div>
-      <div id="historyContent" class="rounded-md bg-primary p-2 overflow-y-auto overflow-x-hidden"></div>
+      <div id="historyContent" class="rounded-md bg-tertiary p-2 overflow-y-auto overflow-x-hidden"></div>
     </div>
   </div>
   <!-- main holding EVERYTHING -->
@@ -97,7 +96,7 @@
       <p class="text-center -ml-10" id="paragraph">Type lyrics, song / album title, or artist to find what you're looking for! Click on the star when you click
       on a result to save up to five results!</p>
       <div class="flex-auto m-10">
-        <div class="relative hidden z-30" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="modalEl">
+        <div class="relative z-30" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="modalEl">
           <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
           <div class="fixed inset-0 z-30 overflow-y-auto">
             <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
@@ -113,7 +112,7 @@
                       </svg>
                     </button>
                   </div>
-                  <div class="mt-2 flex flex-col justify-center items-center" id="modal-content">
+                  <div class="mt-2 flex flex-col justify-center items-center bg-tertiary rounded-lg" id="modal-content">
                     <iframe style="border-radius:12px" class="mb-3" src="" width="100%" height="152" frameBorder="0"
                       allowfullscreen=""
                       allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
