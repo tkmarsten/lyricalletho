@@ -1,8 +1,11 @@
-# Team 11 - Music Finder
+# LyricalLetho
 
 ## Description
 
-Search lyrics
+Ever had the tip of the tongue phenomenon? How about… tip of the ear? Use LyricalLetho when you just can’t quite remember those lyrics, but you’re just on the edge of singing the rest of the song. This application allows you to search with lyrics, song titles, albums, artists and gives you a link to the song on popular streaming services in return!
+
+
+## Tech Stack
 
 <div>
   <h3>Base</h3>
@@ -32,6 +35,7 @@ To use this webpage, you may open the page using the Github pages link or this [
 
 ## Credits
 
+Team 11 <br><br>
 [<img src="https://github.com/vicdotexe.png?size=115" width="115"><br><sub>@Victor Korn</sub>](https://github.com/vicdotexe) <br><br> [<img src="https://github.com/tkmarsten.png?size=115" width="115"><br><sub>@Tiarnan Marsten</sub>](https://github.com/tkmarsten) <br><br> [<img src="https://github.com/dthiel22.png?size=115" width="115"><br><sub>@Alex Thiel</sub>](https://github.com/dthiel22)
 
 ## License
