@@ -24,6 +24,17 @@ var youtube = new YouTube("AIzaSyCRA7L4j30R8a3PI1FApVqZO1rzVpDN6WI");
 spotify.initialize();
 
 
+// var setInnerHTML = function(elm, html) {
+//     elm.innerHTML = html;
+//     Array.from(elm.querySelectorAll("script")).forEach( oldScript => {
+//       const newScript = document.createElement("script");
+//       Array.from(oldScript.attributes)
+//         .forEach( attr => newScript.setAttribute(attr.name, attr.value) );
+//       newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+//       oldScript.parentNode.replaceChild(newScript, oldScript);
+//     });
+//   }
+
 function onSearchPressed() {
     elements.resultsSpinner.style.display = "inline";
     var input = elements.lyricInput.value;
@@ -102,6 +113,8 @@ function fetchAndFillModalContent(hitIndex) {
 
     var title = result.title;
     var artist = result.artist_names;
+    var geniusId = result.id;
+    var geniusUrl = result.url;
     artist = artist.split("(")[0];
 
 
@@ -122,7 +135,7 @@ function fetchAndFillModalContent(hitIndex) {
         // parse and fill spotify data if the response was good
         if (data == null || data.tracks.items.length<1){
             var h3 = document.createElement("h3");
-            h3.innerText = "No Spotify Results";
+            h3.innerText = "(No Spotify Results)";
             elements.modalContent.appendChild(h3);
 
         }else{
@@ -138,40 +151,76 @@ function fetchAndFillModalContent(hitIndex) {
 
 
         // process youtube data
-        var parameters = {
-            q: `${title} ${artist}`,
-            part: "snippet",
-            maxResults: "5"
-        }
-        youtube.get("/search", parameters).then((response) => {
-            console.log("got youtube response");
-            console.log(response);
-            return response.ok ? response.json() : null;
-        }).then((data) => {
+        // var parameters = {
+        //     q: `${title} ${artist}`,
+        //     part: "snippet",
+        //     maxResults: "5"
+        // }
+        // youtube.get("/search", parameters).then((response) => {
+        //     console.log("got youtube response");
+        //     console.log(response);
+        //     return response.ok ? response.json() : null;
+        //     return null;
+        // }).then((data) => {
 
-            // parse and fill youtube data if the response was good
-            if (data != null){
-                console.log("got youtube data");
-                console.log(data);
-                youtubeDiv = document.createElement("div");
-                var id = data.items[0].id.videoId;
-                var url = `https://www.youtube.com/watch?v=${id}`;
-                var a = document.createElement("a");
-                a.setAttribute("href", url);
-                a.setAttribute("target", "_blank");
-                a.innerHTML = "Watch on YouTube";
-                youtubeDiv.appendChild(a);
-                elements.modalContent.appendChild(youtubeDiv);
-            }else{
-                var h3 = document.createElement("h3");
-                h3.innerText = "No YouTube Results";
-                elements.modalContent.appendChild(h3);
-            }
-            elements.modalSpinner.style.display = "none";
-        })
+        //     // parse and fill youtube data if the response was good
+        //     if (data != null){
+        //         console.log("got youtube data");
+        //         console.log(data);
+        //         youtubeDiv = document.createElement("div");
+        //         var id = data.items[0].id.videoId;
+        //         var url = `https://www.youtube.com/watch?v=${id}`;
+        //         var a = document.createElement("a");
+        //         a.setAttribute("href", url);
+        //         a.setAttribute("target", "_blank");
+        //         a.innerHTML = `Watch on <span class='text-red-500'>YouTube</span>`;
+        //         youtubeDiv.appendChild(a);
+        //         elements.modalContent.appendChild(youtubeDiv);
+        //     }else{
+        //         var h3 = document.createElement("h3");
+        //         h3.innerText = "(YouTube Quota Exceeded)";
+        //         elements.modalContent.appendChild(h3);
+        //     }
+
+        //     var a = document.createElement("a");
+        //     a.setAttribute("target", "_blank");
+        //     a.setAttribute("ahref", geniusUrl);
+        //     a.innerHTML = 'View lyrics on <span class="text-amber-500">Genius</span>';
+        //     elements.modalContent.appendChild(a);
+        //     elements.modalSpinner.style.display = "none";
+            
+        // })
+        
+        // youtube thumbnail url = "items[0].snippet.thumbnails.default"
+        // temporary youtube link so we dont spam our endpoint quota
+        var a = document.createElement("a");
+        a.setAttribute("href", "http://www.youtube.com");
+        a.setAttribute("target", "_blank");
+        a.className ="flex justify-center items-center relative";
+        var img = document.createElement("img");
+        img.setAttribute("src", "https://i.ytimg.com/vi/FAO8ZAUBx0c/default.jpg");
+        img.className = "rounded-[8px]"
+        var playImg = document.createElement("img");
+        playImg.setAttribute("src", "./assets/images/playButton.png");
+        playImg.className = "absolute w-9";
+
+        //a.innerHTML = `Watch on <span class='text-red-500'>YouTube</span>`;
+        a.appendChild(img);
+        a.appendChild(playImg);
+        youtubeDiv.appendChild(a);
+        elements.modalContent.appendChild(youtubeDiv);
+
+        // lyrics link
+        var a = document.createElement("a");
+        a.setAttribute("target", "_blank");
+        a.setAttribute("href", geniusUrl);
+        a.innerHTML = 'View lyrics on <span class="text-amber-500">Genius</span>';
+        elements.modalContent.appendChild(a);
+
+        // hide the spinner
+        elements.modalSpinner.style.display = "none";
     });
 }
-
 
 //search press
 elements.searchButton.addEventListener("click", onSearchPressed);
