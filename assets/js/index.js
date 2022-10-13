@@ -60,7 +60,7 @@ function createResultButton(index, artist, title, imageUrl) {
 
     // the main div
     var button = document.createElement("div");
-    button.className = "flex-auto rounded-[30px] bg-gray-200 h-24 transition ease-in-out hover:scale-110 relative duration-300 hover:z-5";
+    button.className = "flex-auto bg-tertiary rounded-[30px] h-32 transition ease-in-out delay-150 hover:scale-110 duration-300 relative hover:z-20";
     button.classList.add("resultButton");
 
     // set custom data attribute defining what index in the hit results this is (this is used to retrieve the stored data)
@@ -69,19 +69,19 @@ function createResultButton(index, artist, title, imageUrl) {
     //todo: handle broken images
     //the album thumbnail
     var img = document.createElement("img");
-    img.className = "flex h-20 w-20 rounded-full border-2 border-black absolute -top-3 -left-5 z-1 bg-black";
+    img.className = "flex h-24 w-24 rounded-full border-4 border-black absolute -top-6 -left-10 bg-quaternary";
     img.setAttribute("src", imageUrl);
     button.appendChild(img);
 
     //the title
     var titleh1 = document.createElement("h1");
-    titleh1.className = "flex h-8 max-w-[65%] rounded-full m-2 p-1 text-sm truncate ... ml-16";
+    titleh1.className = "flex-auto h-12 ml-16 rounded-full m-2 p-3 text-md truncate ...";
     titleh1.innerText = `${title}`;
     button.appendChild(titleh1);
 
     //the artist
     var artisth1 = document.createElement("h1");
-    artisth1.className = "h-8 flex rounded-full m-2 p-1 text-sm ml-14 italic";
+    artisth1.className = "flex-auto h-12 ml-8 rounded-full m-2 p-3 text-md truncate ... italic";
     artisth1.innerText = `${artist}`;
     button.appendChild(artisth1);
 
