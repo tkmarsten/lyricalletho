@@ -162,14 +162,14 @@ function fetchAndFillModalContent(hitIndex) {
             spotifyDiv.appendChild(iframe);
 
             var checkbox = document.createElement("input");
-            checkbox.className="ml-2";
+            checkbox.className="ml-2 star";
             checkbox.setAttribute("type", "checkbox");
             checkbox.checked = getFavorites().includes(firstTrack.id);
             checkbox.addEventListener("change", (event)=>{
                 if (event.target.checked){
                     saveToFavorites(firstTrack.id);
                 }else{
-
+                    removeFromFavorites(firstTrack.id)
                 }
             });
             spotifyDiv.appendChild(checkbox);
@@ -264,18 +264,15 @@ function onHistoryClick(){
             iframe.className = "h-24";
             spotifyDiv.appendChild(iframe);
 
-            var checkbox = document.createElement("input");
-            checkbox.className="ml-2";
-            checkbox.setAttribute("type", "checkbox");
-            checkbox.checked = getFavorites().includes(fav);
-            checkbox.addEventListener("change", (event)=>{
-                if (!event.target.checked){
+            var xButton = document.createElement("button");
+            xButton.innerText = "X";
+            xButton.className = "ml-2 text-red-500";
+            xButton.addEventListener("click", (event)=>{
                     removeFromFavorites(fav);
                     spotifyDiv.remove();
-                }
             });
 
-            spotifyDiv.appendChild(checkbox);
+            spotifyDiv.appendChild(xButton);
             elements.historyContent.appendChild(spotifyDiv);
         })
     }else{
