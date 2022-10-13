@@ -1,8 +1,6 @@
-/// This is all just proof of concept and tinkering around with api calls
-/// not meant to be merged into the main branch. Just something to reference.
-
 import { Genius, Spotify, YouTube } from './api-helpers.js'
 
+// Just an object to store static elements on the page (personal preference to keep me organized)
 var elements = {
     lyricInput: document.querySelector("#lyricInput"),
     searchButton: document.querySelector("#searchButton"),
@@ -14,30 +12,24 @@ var elements = {
 
 }
 
-// place to store genius search data to use after the search if needed.
+// Place to store genius search data to use after the search if needed.
 var lastGeniusData;
 
-// setup the api helpers
+// Setup the api helpers (I know these are overkill since we're only making one call for each,
+// but they were fun to make, and keeps the code here a little cleaner)
 var genius = new Genius("GXl-jB2YMmbsujcZGKUFVHcIzhsZWf3XidKl02rkhtnwjHoWrwNEK8QqsDn73Oje");
 var spotify = new Spotify("3652984d5de34bf48e79cf4623a6d108", "904da68474a34335a798dfef767188ac");
 var youtube = new YouTube("AIzaSyCRA7L4j30R8a3PI1FApVqZO1rzVpDN6WI");
 spotify.initialize();
 
-
-// var setInnerHTML = function(elm, html) {
-//     elm.innerHTML = html;
-//     Array.from(elm.querySelectorAll("script")).forEach( oldScript => {
-//       const newScript = document.createElement("script");
-//       Array.from(oldScript.attributes)
-//         .forEach( attr => newScript.setAttribute(attr.name, attr.value) );
-//       newScript.appendChild(document.createTextNode(oldScript.innerHTML));
-//       oldScript.parentNode.replaceChild(newScript, oldScript);
-//     });
-//   }
-
+/** When the search button is pressed, we are using the /search
+ * endpoint from the genius api and creating elements to represent
+ * each hit, clearing the results container and adding the new elements to the container.
+ */
 function onSearchPressed() {
-    elements.resultsSpinner.style.display = "inline";
-    var input = elements.lyricInput.value;
+    elements.resultsSpinner.style.display = "inline"; //get that spinner going!
+
+    var input = elements.lyricInput.value; // our search value from the input
     var parameters = {
         q: input
     }
@@ -63,27 +55,31 @@ function onSearchPressed() {
     });
 }
 
-// create an html element to represent the content of one of the genius results
+/** Create and return an html element to represent the content of one of the genius results*/
 function createResultButton(index, artist, title, imageUrl) {
 
+    // the main div
     var button = document.createElement("div");
     button.className = "flex-auto rounded-[30px] bg-gray-200 h-24 transition ease-in-out hover:scale-110 relative duration-300 hover:z-5";
     button.classList.add("resultButton");
 
-    //set custom data attribute defining what index in the hit results this is
+    // set custom data attribute defining what index in the hit results this is (this is used to retrieve the stored data)
     button.setAttribute("data-genius", index);
 
     //todo: handle broken images
+    //the album thumbnail
     var img = document.createElement("img");
     img.className = "flex h-20 w-20 rounded-full border-2 border-black absolute -top-3 -left-5 z-1 bg-black";
     img.setAttribute("src", imageUrl);
     button.appendChild(img);
 
+    //the title
     var titleh1 = document.createElement("h1");
     titleh1.className = "flex h-8 max-w-[65%] rounded-full m-2 p-1 text-sm truncate ... ml-16";
     titleh1.innerText = `${title}`;
     button.appendChild(titleh1);
 
+    //the artist
     var artisth1 = document.createElement("h1");
     artisth1.className = "h-8 flex rounded-full m-2 p-1 text-sm ml-14 italic";
     artisth1.innerText = `${artist}`;
@@ -92,6 +88,7 @@ function createResultButton(index, artist, title, imageUrl) {
     return button;
 }
 
+/** Checks if a search result was clicked, if so pull up the modal and fill it */
 function onResultsClick(event) {
     // get the hit results index of whatever we clicked
     var hitIndex = event.target.closest("div").getAttribute("data-genius");
@@ -107,6 +104,10 @@ function onResultsClick(event) {
     fetchAndFillModalContent(hitIndex);
 }
 
+/** Fetches data from the locally stored genius data, by index,
+ *  then we can use that data to fetch from spotify and youtube.
+ * Creates html elements based on the data, and appends it to the modal's content
+ */
 function fetchAndFillModalContent(hitIndex) {
     var result = lastGeniusData.response.hits[hitIndex].result;
     console.log(result);
@@ -192,6 +193,7 @@ function fetchAndFillModalContent(hitIndex) {
         // })
         
         // youtube thumbnail url = "items[0].snippet.thumbnails.default"
+        
         // temporary youtube link so we dont spam our endpoint quota
         var a = document.createElement("a");
         a.setAttribute("href", "http://www.youtube.com");
@@ -222,10 +224,10 @@ function fetchAndFillModalContent(hitIndex) {
     });
 }
 
-//search press
+// search pressed
 elements.searchButton.addEventListener("click", onSearchPressed);
 
-//catchall for genius results
+// catchall for clicks on genius results
 elements.resultsContainer.addEventListener("click", onResultsClick);
 
 let closeButton = document.getElementById('close-button')
