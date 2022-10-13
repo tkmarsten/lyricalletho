@@ -8,8 +8,13 @@ var elements = {
     modalContent: document.querySelector("#modal-content"),
     modal: document.querySelector("#modalEl"),
     modalSpinner: document.querySelector("#modalSpinner"),
-    resultsSpinner: document.querySelector("#resultsSpinner")
-
+    resultsSpinner: document.querySelector("#resultsSpinner"),
+    historyPanel: document.querySelector("#historyPanel"),
+    historyButton: document.querySelector("#historyButton"),
+    historyContent: document.querySelector("#historyContent"),
+    favoritesCloseButton: document.querySelector("#favoritesClose"),
+    historyModal: document.querySelector("#historyModal"),
+    paragraph: document.querySelector("#paragraph")
 }
 
 // Place to store genius search data to use after the search if needed.
@@ -27,9 +32,14 @@ spotify.initialize();
  * each hit, clearing the results container and adding the new elements to the container.
  */
 function onSearchPressed() {
-    elements.resultsSpinner.style.display = "inline"; //get that spinner going!
-
     var input = elements.lyricInput.value; // our search value from the input
+    if (!input){
+        return;
+    }
+    elements.resultsSpinner.style.display = "inline"; //get that spinner going!
+    paragraph.remove();
+    
+
     var parameters = {
         q: input
     }
@@ -60,7 +70,7 @@ function createResultButton(index, artist, title, imageUrl) {
 
     // the main div
     var button = document.createElement("div");
-    button.className = "flex-auto rounded-[30px] bg-gray-200 h-24 transition ease-in-out hover:scale-110 relative duration-300 hover:z-5";
+    button.className = "flex-auto bg-tertiary rounded-[30px] h-32 transition ease-in-out delay-150 hover:scale-110 duration-300 relative hover:z-20";
     button.classList.add("resultButton");
 
     // set custom data attribute defining what index in the hit results this is (this is used to retrieve the stored data)
@@ -69,19 +79,19 @@ function createResultButton(index, artist, title, imageUrl) {
     //todo: handle broken images
     //the album thumbnail
     var img = document.createElement("img");
-    img.className = "flex h-20 w-20 rounded-full border-2 border-black absolute -top-3 -left-5 z-1 bg-black";
+    img.className = "flex h-24 w-24 rounded-full border-4 border-black absolute -top-6 -left-10 bg-quaternary";
     img.setAttribute("src", imageUrl);
     button.appendChild(img);
 
     //the title
     var titleh1 = document.createElement("h1");
-    titleh1.className = "flex h-8 max-w-[65%] rounded-full m-2 p-1 text-sm truncate ... ml-16";
+    titleh1.className = "flex-auto h-12 ml-16 rounded-full m-2 p-3 text-md truncate ...";
     titleh1.innerText = `${title}`;
     button.appendChild(titleh1);
 
     //the artist
     var artisth1 = document.createElement("h1");
-    artisth1.className = "h-8 flex rounded-full m-2 p-1 text-sm ml-14 italic";
+    artisth1.className = "flex-auto h-12 ml-8 rounded-full m-2 p-3 text-md truncate ... italic";
     artisth1.innerText = `${artist}`;
     button.appendChild(artisth1);
 
@@ -134,20 +144,36 @@ function fetchAndFillModalContent(hitIndex) {
     }).then((data) => {
 
         // parse and fill spotify data if the response was good
-        if (data == null || data.tracks.items.length<1){
+        if (data == null || data.tracks.items.length < 1) {
             var h3 = document.createElement("h3");
             h3.innerText = "(No Spotify Results)";
             elements.modalContent.appendChild(h3);
 
-        }else{
+        } else {
             console.log("got spotify data")
             console.log(data);
+            var spotifyDiv = document.createElement("div");
+            spotifyDiv.className="flex items-center";
 
             var firstTrack = data.tracks.items[0];
             var iframe = document.createElement("iframe");
             iframe.setAttribute("src", `https://open.spotify.com/embed/track/${firstTrack.id}`)
             iframe.className = "h-40 w-96";
-            elements.modalContent.appendChild(iframe);
+            spotifyDiv.appendChild(iframe);
+
+            var checkbox = document.createElement("input");
+            checkbox.className="ml-2";
+            checkbox.setAttribute("type", "checkbox");
+            checkbox.checked = getFavorites().includes(firstTrack.id);
+            checkbox.addEventListener("change", (event)=>{
+                if (event.target.checked){
+                    saveToFavorites(firstTrack.id);
+                }else{
+
+                }
+            });
+            spotifyDiv.appendChild(checkbox);
+            elements.modalContent.appendChild(spotifyDiv);
         }
 
 
@@ -189,16 +215,16 @@ function fetchAndFillModalContent(hitIndex) {
         //     a.innerHTML = 'View lyrics on <span class="text-amber-500">Genius</span>';
         //     elements.modalContent.appendChild(a);
         //     elements.modalSpinner.style.display = "none";
-            
+
         // })
-        
+
         // youtube thumbnail url = "items[0].snippet.thumbnails.default"
-        
+
         // temporary youtube link so we dont spam our endpoint quota
         var a = document.createElement("a");
         a.setAttribute("href", "http://www.youtube.com");
         a.setAttribute("target", "_blank");
-        a.className ="flex justify-center items-center relative";
+        a.className = "flex justify-center items-center relative";
         var img = document.createElement("img");
         img.setAttribute("src", "https://i.ytimg.com/vi/FAO8ZAUBx0c/default.jpg");
         img.className = "rounded-[8px]"
@@ -224,6 +250,76 @@ function fetchAndFillModalContent(hitIndex) {
     });
 }
 
+function onHistoryClick(){
+
+    elements.historyModal.classList.remove("hidden");
+    var favorites = getFavorites();
+    if (favorites.length > 0){
+        favorites.forEach((fav)=>{
+            var spotifyDiv = document.createElement("div");
+            spotifyDiv.className = "flex items-center";
+
+            var iframe = document.createElement("iframe");
+            iframe.setAttribute("src", `https://open.spotify.com/embed/track/${fav}`)
+            iframe.className = "h-24";
+            spotifyDiv.appendChild(iframe);
+
+            var checkbox = document.createElement("input");
+            checkbox.className="ml-2";
+            checkbox.setAttribute("type", "checkbox");
+            checkbox.checked = getFavorites().includes(fav);
+            checkbox.addEventListener("change", (event)=>{
+                if (!event.target.checked){
+                    removeFromFavorites(fav);
+                    spotifyDiv.remove();
+                }
+            });
+
+            spotifyDiv.appendChild(checkbox);
+            elements.historyContent.appendChild(spotifyDiv);
+        })
+    }else{
+        var p = document.createElement("p");
+        p.innerText = "No Favorites";
+        elements.historyContent.appendChild(p);
+    }
+    
+}
+
+function onFavoritesClose(){
+    elements.historyContent.innerHTML = "";
+    elements.historyModal.classList.add("hidden");
+}
+
+function saveToFavorites(url){
+    var favorites = getFavorites();
+    favorites.unshift(url);
+    if (favorites.length>5){
+        favorites.pop();
+    }
+    localStorage.setItem("spotifyFavorites", JSON.stringify(favorites));
+}
+
+function removeFromFavorites(url){
+    var favorites = getFavorites();
+    var index = -1;
+    for(var i = 0; i < favorites.length; i++){
+        if (favorites[i] == url){
+            index = i;
+        }
+    }
+    if (index >=0){
+        favorites.splice(index,1);
+        localStorage.setItem("spotifyFavorites", JSON.stringify(favorites));
+    }
+
+}
+
+function getFavorites(){
+    var favorites = JSON.parse(localStorage.getItem("spotifyFavorites"));
+    return favorites ? favorites : [];
+}
+
 // search pressed
 elements.searchButton.addEventListener("click", onSearchPressed);
 
@@ -235,4 +331,13 @@ let closeButton = document.getElementById('close-button')
 closeButton.addEventListener('click', function () {
     elements.modal.style.display = 'none'
     elements.modalContent.innerHTML = ""; // clear this on close so iframe is removed and spotify doesn't keep playing music
+})
+
+
+elements.historyButton.addEventListener("click", onHistoryClick);
+elements.favoritesCloseButton.addEventListener("click", onFavoritesClose);
+let searchForm = document.querySelector('.search-form')
+
+searchForm.addEventListener('submit', function (event) {
+    event.preventDefault()
 })
