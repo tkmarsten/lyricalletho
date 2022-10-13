@@ -60,27 +60,7 @@
         <h3 class="whitespace-nowrap p-2 text-center inline text-white">Recent Spotify Favorites</h3>
         <button id="favoritesClose" class="inline text-white">X</button>
       </div>
-      
-      <div id="historyContent" class="rounded-md bg-primary p-2 overflow-y-auto overflow-x-hidden">
-        <div class="flex items-center">
-          <iframe style="border-radius:12px" class="h-24"
-          src="https://open.spotify.com/embed/track/23qnota5Iyg4f9LNdNIC1D"
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-          loading="lazy"></iframe>
-          <input type="checkbox" class="ml-2">
-        </div>
-
-        <iframe style="border-radius:12px" class="h-24"
-        src="https://open.spotify.com/embed/track/23qnota5Iyg4f9LNdNIC1D"
-        allowfullscreen=""
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy"></iframe>
-        <iframe style="border-radius:12px" class="h-24"
-        src="https://open.spotify.com/embed/track/23qnota5Iyg4f9LNdNIC1D"
-        allowfullscreen=""
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy"></iframe>
-      </div>
+      <div id="historyContent" class="rounded-md bg-primary p-2 overflow-y-auto overflow-x-hidden"></div>
     </div>
   </div>
   <!-- main holding EVERYTHING -->
@@ -117,7 +97,7 @@
       <p class="text-center -ml-10" id="paragraph">Type lyrics, song / album title, or artist to find what you're looking for! Click on the star when you click
       on a result to save up to five results!</p>
       <div class="flex-auto m-10">
-        <div class="relative z-30" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="modalEl">
+        <div class="relative hidden z-30" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="modalEl">
           <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
           <div class="fixed inset-0 z-30 overflow-y-auto">
             <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
