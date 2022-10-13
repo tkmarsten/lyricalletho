@@ -8,8 +8,13 @@ var elements = {
     modalContent: document.querySelector("#modal-content"),
     modal: document.querySelector("#modalEl"),
     modalSpinner: document.querySelector("#modalSpinner"),
-    resultsSpinner: document.querySelector("#resultsSpinner")
-
+    resultsSpinner: document.querySelector("#resultsSpinner"),
+    historyPanel: document.querySelector("#historyPanel"),
+    historyButton: document.querySelector("#historyButton"),
+    historyContent: document.querySelector("#historyContent"),
+    favoritesCloseButton: document.querySelector("#favoritesClose"),
+    historyModal: document.querySelector("#historyModal"),
+    paragraph: document.querySelector("#paragraph")
 }
 
 // Place to store genius search data to use after the search if needed.
@@ -27,9 +32,14 @@ spotify.initialize();
  * each hit, clearing the results container and adding the new elements to the container.
  */
 function onSearchPressed() {
-    elements.resultsSpinner.style.display = "inline"; //get that spinner going!
-
     var input = elements.lyricInput.value; // our search value from the input
+    if (!input){
+        return;
+    }
+    elements.resultsSpinner.style.display = "inline"; //get that spinner going!
+    paragraph.remove();
+    
+
     var parameters = {
         q: input
     }
@@ -142,12 +152,28 @@ function fetchAndFillModalContent(hitIndex) {
         } else {
             console.log("got spotify data")
             console.log(data);
+            var spotifyDiv = document.createElement("div");
+            spotifyDiv.className="flex items-center";
 
             var firstTrack = data.tracks.items[0];
             var iframe = document.createElement("iframe");
             iframe.setAttribute("src", `https://open.spotify.com/embed/track/${firstTrack.id}`)
             iframe.className = "h-40 w-96";
-            elements.modalContent.appendChild(iframe);
+            spotifyDiv.appendChild(iframe);
+
+            var checkbox = document.createElement("input");
+            checkbox.className="ml-2";
+            checkbox.setAttribute("type", "checkbox");
+            checkbox.checked = getFavorites().includes(firstTrack.id);
+            checkbox.addEventListener("change", (event)=>{
+                if (event.target.checked){
+                    saveToFavorites(firstTrack.id);
+                }else{
+
+                }
+            });
+            spotifyDiv.appendChild(checkbox);
+            elements.modalContent.appendChild(spotifyDiv);
         }
 
 
@@ -224,6 +250,76 @@ function fetchAndFillModalContent(hitIndex) {
     });
 }
 
+function onHistoryClick(){
+
+    elements.historyModal.classList.remove("hidden");
+    var favorites = getFavorites();
+    if (favorites.length > 0){
+        favorites.forEach((fav)=>{
+            var spotifyDiv = document.createElement("div");
+            spotifyDiv.className = "flex items-center";
+
+            var iframe = document.createElement("iframe");
+            iframe.setAttribute("src", `https://open.spotify.com/embed/track/${fav}`)
+            iframe.className = "h-24";
+            spotifyDiv.appendChild(iframe);
+
+            var checkbox = document.createElement("input");
+            checkbox.className="ml-2";
+            checkbox.setAttribute("type", "checkbox");
+            checkbox.checked = getFavorites().includes(fav);
+            checkbox.addEventListener("change", (event)=>{
+                if (!event.target.checked){
+                    removeFromFavorites(fav);
+                    spotifyDiv.remove();
+                }
+            });
+
+            spotifyDiv.appendChild(checkbox);
+            elements.historyContent.appendChild(spotifyDiv);
+        })
+    }else{
+        var p = document.createElement("p");
+        p.innerText = "No Favorites";
+        elements.historyContent.appendChild(p);
+    }
+    
+}
+
+function onFavoritesClose(){
+    elements.historyContent.innerHTML = "";
+    elements.historyModal.classList.add("hidden");
+}
+
+function saveToFavorites(url){
+    var favorites = getFavorites();
+    favorites.unshift(url);
+    if (favorites.length>5){
+        favorites.pop();
+    }
+    localStorage.setItem("spotifyFavorites", JSON.stringify(favorites));
+}
+
+function removeFromFavorites(url){
+    var favorites = getFavorites();
+    var index = -1;
+    for(var i = 0; i < favorites.length; i++){
+        if (favorites[i] == url){
+            index = i;
+        }
+    }
+    if (index >=0){
+        favorites.splice(index,1);
+        localStorage.setItem("spotifyFavorites", JSON.stringify(favorites));
+    }
+
+}
+
+function getFavorites(){
+    var favorites = JSON.parse(localStorage.getItem("spotifyFavorites"));
+    return favorites ? favorites : [];
+}
+
 // search pressed
 elements.searchButton.addEventListener("click", onSearchPressed);
 
@@ -237,6 +333,9 @@ closeButton.addEventListener('click', function () {
     elements.modalContent.innerHTML = ""; // clear this on close so iframe is removed and spotify doesn't keep playing music
 })
 
+
+elements.historyButton.addEventListener("click", onHistoryClick);
+elements.favoritesCloseButton.addEventListener("click", onFavoritesClose);
 let searchForm = document.querySelector('.search-form')
 
 searchForm.addEventListener('submit', function (event) {
