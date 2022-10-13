@@ -134,12 +134,12 @@ function fetchAndFillModalContent(hitIndex) {
     }).then((data) => {
 
         // parse and fill spotify data if the response was good
-        if (data == null || data.tracks.items.length<1){
+        if (data == null || data.tracks.items.length < 1) {
             var h3 = document.createElement("h3");
             h3.innerText = "(No Spotify Results)";
             elements.modalContent.appendChild(h3);
 
-        }else{
+        } else {
             console.log("got spotify data")
             console.log(data);
 
@@ -189,16 +189,16 @@ function fetchAndFillModalContent(hitIndex) {
         //     a.innerHTML = 'View lyrics on <span class="text-amber-500">Genius</span>';
         //     elements.modalContent.appendChild(a);
         //     elements.modalSpinner.style.display = "none";
-            
+
         // })
-        
+
         // youtube thumbnail url = "items[0].snippet.thumbnails.default"
-        
+
         // temporary youtube link so we dont spam our endpoint quota
         var a = document.createElement("a");
         a.setAttribute("href", "http://www.youtube.com");
         a.setAttribute("target", "_blank");
-        a.className ="flex justify-center items-center relative";
+        a.className = "flex justify-center items-center relative";
         var img = document.createElement("img");
         img.setAttribute("src", "https://i.ytimg.com/vi/FAO8ZAUBx0c/default.jpg");
         img.className = "rounded-[8px]"
@@ -235,4 +235,10 @@ let closeButton = document.getElementById('close-button')
 closeButton.addEventListener('click', function () {
     elements.modal.style.display = 'none'
     elements.modalContent.innerHTML = ""; // clear this on close so iframe is removed and spotify doesn't keep playing music
+})
+
+let searchForm = document.querySelector('.search-form')
+
+searchForm.addEventListener('submit', function (event) {
+    event.preventDefault()
 })
