@@ -147,12 +147,16 @@ function fetchAndFillModalContent(hitIndex) {
             console.log("got spotify data")
             console.log(data);
             var spotifyDiv = document.createElement("div");
+            spotifyDiv.className="flex items-center";
+
             var firstTrack = data.tracks.items[0];
             var iframe = document.createElement("iframe");
             iframe.setAttribute("src", `https://open.spotify.com/embed/track/${firstTrack.id}`)
             iframe.className = "h-40 w-96";
             spotifyDiv.appendChild(iframe);
+
             var checkbox = document.createElement("input");
+            checkbox.className="ml-2";
             checkbox.setAttribute("type", "checkbox");
             checkbox.checked = getFavorites().includes(firstTrack.id);
             checkbox.addEventListener("change", (event)=>{
@@ -246,10 +250,27 @@ function onHistoryClick(){
     var favorites = getFavorites();
     if (favorites.length > 0){
         favorites.forEach((fav)=>{
+            var spotifyDiv = document.createElement("div");
+            spotifyDiv.className = "flex items-center";
+
             var iframe = document.createElement("iframe");
             iframe.setAttribute("src", `https://open.spotify.com/embed/track/${fav}`)
             iframe.className = "h-24";
-            elements.historyContent.appendChild(iframe);
+            spotifyDiv.appendChild(iframe);
+
+            var checkbox = document.createElement("input");
+            checkbox.className="ml-2";
+            checkbox.setAttribute("type", "checkbox");
+            checkbox.checked = getFavorites().includes(fav);
+            checkbox.addEventListener("change", (event)=>{
+                if (!event.target.checked){
+                    removeFromFavorites(fav);
+                    spotifyDiv.remove();
+                }
+            });
+
+            spotifyDiv.appendChild(checkbox);
+            elements.historyContent.appendChild(spotifyDiv);
         })
     }else{
         var p = document.createElement("p");
@@ -277,7 +298,7 @@ function removeFromFavorites(url){
     var favorites = getFavorites();
     var index = -1;
     for(var i = 0; i < favorites.length; i++){
-        if (i == url){
+        if (favorites[i] == url){
             index = i;
         }
     }
