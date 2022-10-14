@@ -49,12 +49,12 @@
         <input class="px-4 py-3 rounded-l-lg w-1/2" placeholder="Insert lyrics, title, or artist" id="lyricInput">
         <button class="rounded-r-lg bg-blue bg-white p-3" id="searchButton">Search</button>
       </form>
-      <button id="historyButton" class="bg-white p-3 rounded-lg ml-2">Favorites</button>
+      <button id="favoritesButton" class="bg-white p-3 rounded-lg ml-2">Favorites</button>
   </header>
   
 
-  <div id="historyModal" class="flex justify-center items-center fixed bg-gray-500 bg-opacity-75 w-screen h-screen top-0 left-0 z-50 hidden">
-    <div id="historyPanel" class="flex flex-col max-h-3/4 border border-black rounded-md bg-secondary p-2 pt-0 z-50">
+  <div id="favoritesModal" class="flex justify-center items-center fixed bg-gray-500 bg-opacity-75 w-screen h-screen top-0 left-0 z-50 hidden">
+    <div id="favoritesPanel" class="flex flex-col max-h-3/4 border border-black rounded-md bg-secondary p-2 pt-0 z-50">
       <div class="flex justify-between">
         <h3 class="whitespace-nowrap p-2 text-center inline text-white">Recent Spotify Favorites</h3>
         <button id="favoritesClose" class="inline text-white">                      
@@ -66,7 +66,7 @@
           </svg>
         </button>
       </div>
-      <div id="historyContent" class="rounded-md bg-tertiary p-2 overflow-y-auto overflow-x-hidden"></div>
+      <div id="favoritesContent" class="rounded-md bg-tertiary p-2 overflow-y-auto overflow-x-hidden"></div>
     </div>
   </div>
   <!-- main holding EVERYTHING -->
