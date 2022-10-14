@@ -182,75 +182,56 @@ function fetchAndFillModalContent(hitIndex) {
 
 
         // process youtube data
-        // var parameters = {
-        //     q: `${title} ${artist}`,
-        //     part: "snippet",
-        //     maxResults: "5"
-        // }
-        // youtube.get("/search", parameters).then((response) => {
-        //     console.log("got youtube response");
-        //     console.log(response);
-        //     return response.ok ? response.json() : null;
-        //     return null;
-        // }).then((data) => {
+        var parameters = {
+            q: `${title} ${artist}`,
+            part: "snippet",
+            maxResults: "5"
+        }
+        youtube.get("/search", parameters).then((response) => {
+            console.log("got youtube response");
+            console.log(response);
+            return response.ok ? response.json() : null;
+        }).then((data) => {
 
-        //     // parse and fill youtube data if the response was good
-        //     if (data != null){
-        //         console.log("got youtube data");
-        //         console.log(data);
-        //         youtubeDiv = document.createElement("div");
-        //         var id = data.items[0].id.videoId;
-        //         var url = `https://www.youtube.com/watch?v=${id}`;
-        //         var a = document.createElement("a");
-        //         a.setAttribute("href", url);
-        //         a.setAttribute("target", "_blank");
-        //         a.innerHTML = `Watch on <span class='text-red-500'>YouTube</span>`;
-        //         youtubeDiv.appendChild(a);
-        //         elements.modalContent.appendChild(youtubeDiv);
-        //     }else{
-        //         var h3 = document.createElement("h3");
-        //         h3.innerText = "(YouTube Quota Exceeded)";
-        //         elements.modalContent.appendChild(h3);
-        //     }
+            // parse and fill youtube data if the response was good
+            if (data != null){
+                console.log("got youtube data");
+                console.log(data);
+                youtubeDiv = document.createElement("div");
+                var id = data.items[0].id.videoId;
+                var url = `https://www.youtube.com/watch?v=${id}`;
 
-        //     var a = document.createElement("a");
-        //     a.setAttribute("target", "_blank");
-        //     a.setAttribute("ahref", geniusUrl);
-        //     a.innerHTML = 'View lyrics on <span class="text-amber-500">Genius</span>';
-        //     elements.modalContent.appendChild(a);
-        //     elements.modalSpinner.style.display = "none";
+                var a = document.createElement("a");
+                a.setAttribute("href", url);
+                a.setAttribute("target", "_blank");
+                a.className = "flex justify-center items-center relative";
+                var img = document.createElement("img");
+                img.setAttribute("src", data.items[0].snippet.thumbnails.medium.url);
+                img.className = "rounded-[8px]"
+                var playImg = document.createElement("img");
+                playImg.setAttribute("src", "./assets/images/playButton.png");
+                playImg.className = "absolute w-16";
+        
+                //a.innerHTML = `Watch on <span class='text-red-500'>YouTube</span>`;
+                a.appendChild(img);
+                a.appendChild(playImg);
+                youtubeDiv.appendChild(a);
+                elements.modalContent.appendChild(youtubeDiv);
+            }else{
+                var h3 = document.createElement("h3");
+                h3.innerText = "(YouTube Quota Exceeded)";
+                elements.modalContent.appendChild(h3);
+            }
 
-        // })
+            var a = document.createElement("a");
+            a.setAttribute("target", "_blank");
+            a.setAttribute("ahref", geniusUrl);
+            a.innerHTML = 'View lyrics on <span class="text-amber-500">Genius</span>';
+            elements.modalContent.appendChild(a);
+            elements.modalSpinner.style.display = "none";
 
-        // youtube thumbnail url = "items[0].snippet.thumbnails.default"
+        })
 
-        // temporary youtube link so we dont spam our endpoint quota
-        var a = document.createElement("a");
-        a.setAttribute("href", "http://www.youtube.com");
-        a.setAttribute("target", "_blank");
-        a.className = "flex justify-center items-center relative";
-        var img = document.createElement("img");
-        img.setAttribute("src", "https://i.ytimg.com/vi/FAO8ZAUBx0c/mqdefault.jpg");
-        img.className = "rounded-[8px]"
-        var playImg = document.createElement("img");
-        playImg.setAttribute("src", "./assets/images/playButton.png");
-        playImg.className = "absolute w-16";
-
-        //a.innerHTML = `Watch on <span class='text-red-500'>YouTube</span>`;
-        a.appendChild(img);
-        a.appendChild(playImg);
-        youtubeDiv.appendChild(a);
-        elements.modalContent.appendChild(youtubeDiv);
-
-        // lyrics link
-        var a = document.createElement("a");
-        a.setAttribute("target", "_blank");
-        a.setAttribute("href", geniusUrl);
-        a.innerHTML = 'View lyrics on <span class="font-bold text-amber-500">Genius</span>';
-        elements.modalContent.appendChild(a);
-
-        // hide the spinner
-        elements.modalSpinner.classList.add("hidden");
     });
 }
 
