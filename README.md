@@ -4,6 +4,8 @@
 
 Ever had the tip of the tongue phenomenon? How about… tip of the ear? Use LyricalLetho when you just can’t quite remember those lyrics, but you’re just on the edge of singing the rest of the song. This application allows you to search with lyrics, song titles, albums, artists and gives you a link to the song on popular streaming services in return!
 
+![Image of homepage](homepage.png)
+
 
 ## Tech Stack
 
@@ -26,8 +28,6 @@ Ever had the tip of the tongue phenomenon? How about… tip of the ear? Use Lyri
   <a href="https://developers.google.com/youtube/v3" target="_blank"><img src="https://www.freepnglogos.com/uploads/youtube-logo-hd-8.png" title="Youtube" alt="Youtube" width="60" height="40"/></a>
 </div>
 
-
-![Image of homepage](homepage.png)
 
 ## Usage
 
