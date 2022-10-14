@@ -9,11 +9,11 @@ var elements = {
     modal: document.querySelector("#modalEl"),
     modalSpinner: document.querySelector("#modalSpinner"),
     resultsSpinner: document.querySelector("#resultsSpinner"),
-    historyPanel: document.querySelector("#historyPanel"),
-    historyButton: document.querySelector("#historyButton"),
-    historyContent: document.querySelector("#historyContent"),
+    favoritesPanel: document.querySelector("#favoritesPanel"),
+    favoritesButton: document.querySelector("#favoritesButton"),
+    favoritesContent: document.querySelector("#favoritesContent"),
     favoritesCloseButton: document.querySelector("#favoritesClose"),
-    historyModal: document.querySelector("#historyModal"),
+    favoritesModal: document.querySelector("#favoritesModal"),
     paragraph: document.querySelector("#paragraph")
 }
 
@@ -127,11 +127,24 @@ function fetchAndFillModalContent(hitIndex) {
     var geniusId = result.id;
     var geniusUrl = result.url;
     artist = artist.split("(")[0];
-
-
-    var youtubeDiv = document.createElement("div");
+    
+    // make sure modal content is cleared
     elements.modalContent.innerHTML = "";
 
+    var a = document.createElement("a");
+    a.setAttribute("target", "_blank");
+    a.setAttribute("href", geniusUrl);
+    a.innerHTML = 'View lyrics on <span class="text-amber-500">Genius</span>';
+    elements.modalContent.appendChild(a);
+
+    getAndRenderSpotifyResults(title, artist);
+    getAndRenderYoutubeResults(title, artist);
+}
+
+/** Fetch spotify results based on title and artist from genius and
+ * render the the first result to the modal-content container
+ */
+function getAndRenderSpotifyResults(title, artist){
     // start off getting spotify data
     var parameters = {
         q: `track:${title} artist:${artist}`,
@@ -141,103 +154,104 @@ function fetchAndFillModalContent(hitIndex) {
         console.log("got spotify response");
         console.log(response);
         return response.ok ? response.json() : null;
-    }).then((data) => {
-
-        // parse and fill spotify data if the response was good
-        if (data == null || data.tracks.items.length < 1) {
-            var h3 = document.createElement("h3");
-            h3.innerText = "(No Spotify Results)";
-            elements.modalContent.appendChild(h3);
-
-        } else {
-            console.log("got spotify data")
-            console.log(data);
-            var spotifyDiv = document.createElement("div");
-            spotifyDiv.className="flex items-center";
-
-            var firstTrack = data.tracks.items[0];
-            var iframe = document.createElement("iframe");
-            iframe.setAttribute("src", `https://open.spotify.com/embed/track/${firstTrack.id}`)
-            iframe.className = "h-40 w-[300px]";
-            spotifyDiv.appendChild(iframe);
-
-            var starDiv = document.createElement("div");
-            starDiv.className = "relative";
-
-            var checkbox = document.createElement("input");
-            checkbox.className="ml-2 star";
-            checkbox.setAttribute("type", "checkbox");
-            checkbox.checked = getFavorites().includes(firstTrack.id);
-            checkbox.addEventListener("change", (event)=>{
-                if (event.target.checked){
-                    saveToFavorites(firstTrack.id);
-                }else{
-                    removeFromFavorites(firstTrack.id)
-                }
-            });
-            starDiv.appendChild(checkbox);
-            spotifyDiv.appendChild(starDiv);
-            elements.modalContent.appendChild(spotifyDiv);
-        }
-
-
-        // process youtube data
-        var parameters = {
-            q: `${title} ${artist}`,
-            part: "snippet",
-            maxResults: "5"
-        }
-        youtube.get("/search", parameters).then((response) => {
-            console.log("got youtube response");
-            console.log(response);
-            return response.ok ? response.json() : null;
         }).then((data) => {
 
-            // parse and fill youtube data if the response was good
-            if (data != null){
-                console.log("got youtube data");
-                console.log(data);
-                youtubeDiv = document.createElement("div");
-                var id = data.items[0].id.videoId;
-                var url = `https://www.youtube.com/watch?v=${id}`;
-
-                var a = document.createElement("a");
-                a.setAttribute("href", url);
-                a.setAttribute("target", "_blank");
-                a.className = "flex justify-center items-center relative";
-                var img = document.createElement("img");
-                img.setAttribute("src", data.items[0].snippet.thumbnails.medium.url);
-                img.className = "rounded-[8px]"
-                var playImg = document.createElement("img");
-                playImg.setAttribute("src", "./assets/images/playButton.png");
-                playImg.className = "absolute w-16";
-        
-                //a.innerHTML = `Watch on <span class='text-red-500'>YouTube</span>`;
-                a.appendChild(img);
-                a.appendChild(playImg);
-                youtubeDiv.appendChild(a);
-                elements.modalContent.appendChild(youtubeDiv);
-            }else{
+            // parse and fill spotify data if the response was good
+            if (data == null || data.tracks.items.length < 1) {
                 var h3 = document.createElement("h3");
-                h3.innerText = "(YouTube Quota Exceeded)";
+                h3.innerText = "(No Spotify Results)";
                 elements.modalContent.appendChild(h3);
+
+            } else {
+                console.log("got spotify data")
+                console.log(data);
+                var spotifyDiv = document.createElement("div");
+                spotifyDiv.className="flex items-center";
+
+                var firstTrack = data.tracks.items[0];
+                var iframe = document.createElement("iframe");
+                iframe.setAttribute("src", `https://open.spotify.com/embed/track/${firstTrack.id}`)
+                iframe.className = "h-40 w-[300px]";
+                spotifyDiv.appendChild(iframe);
+
+                var starDiv = document.createElement("div");
+                starDiv.className = "relative";
+
+                var checkbox = document.createElement("input");
+                checkbox.className="ml-2 star";
+                checkbox.setAttribute("type", "checkbox");
+                checkbox.checked = getFavorites().includes(firstTrack.id);
+                checkbox.addEventListener("change", (event)=>{
+                    if (event.target.checked){
+                        saveToFavorites(firstTrack.id);
+                    }else{
+                        removeFromFavorites(firstTrack.id)
+                    }
+                });
+                starDiv.appendChild(checkbox);
+                spotifyDiv.appendChild(starDiv);
+                elements.modalContent.appendChild(spotifyDiv);
             }
-
-            var a = document.createElement("a");
-            a.setAttribute("target", "_blank");
-            a.setAttribute("ahref", geniusUrl);
-            a.innerHTML = 'View lyrics on <span class="text-amber-500">Genius</span>';
-            elements.modalContent.appendChild(a);
+            
             elements.modalSpinner.style.display = "none";
-
-        })
-
-    });
+        });
 }
 
-function onHistoryClick(){
+/** Fetch you results based on title and artist from genius and
+ * render the the first result to the modal-content container
+ */
+function getAndRenderYoutubeResults(title, artist){
 
-    elements.historyModal.classList.remove("hidden");
+    var youtubeDiv = document.createElement("div");
+    // process youtube data
+    var parameters = {
+        q: `${title} ${artist}`,
+        part: "snippet",
+        maxResults: "5"
+    }
+    youtube.get("/search", parameters).then((response) => {
+        console.log("got youtube response");
+        console.log(response);
+        return response.ok ? response.json() : null;
+    }).then((data) => {
+
+        // parse and fill youtube data if the response was good
+        if (data != null){
+            console.log("got youtube data");
+            console.log(data);
+            youtubeDiv = document.createElement("div");
+            var id = data.items[0].id.videoId;
+            var url = `https://www.youtube.com/watch?v=${id}`;
+
+            var a = document.createElement("a");
+            a.setAttribute("href", url);
+            a.setAttribute("target", "_blank");
+            a.className = "flex justify-center items-center relative";
+            var img = document.createElement("img");
+            img.setAttribute("src", data.items[0].snippet.thumbnails.medium.url);
+            img.className = "rounded-[8px]"
+            var playImg = document.createElement("img");
+            playImg.setAttribute("src", "./assets/images/playButton.png");
+            playImg.className = "absolute w-16";
+    
+            //a.innerHTML = `Watch on <span class='text-red-500'>YouTube</span>`;
+            a.appendChild(img);
+            a.appendChild(playImg);
+            youtubeDiv.appendChild(a);
+            elements.modalContent.appendChild(youtubeDiv);
+        }else{
+            var h3 = document.createElement("h3");
+            h3.innerText = "(YouTube Quota Exceeded)";
+            elements.modalContent.appendChild(h3);
+        }
+
+    })
+}
+
+// callback for when the favorites button is clicked
+function onFavoritesClick(){
+
+    elements.favoritesModal.classList.remove("hidden");
     var favorites = getFavorites();
     if (favorites.length > 0){
         favorites.forEach((fav)=>{
@@ -255,29 +269,31 @@ function onHistoryClick(){
             xButton.addEventListener("click", (event)=>{
                     removeFromFavorites(fav);
                     spotifyDiv.remove();
-                    if (elements.historyContent.children.length == 0){
+                    if (elements.favoritesContent.children.length == 0){
                         var p = document.createElement("p");
                         p.innerText = "No Favorites."
-                        elements.historyContent.appendChild(p);
+                        elements.favoritesContent.appendChild(p);
                     }
             });
 
             spotifyDiv.appendChild(xButton);
-            elements.historyContent.appendChild(spotifyDiv);
+            elements.favoritesContent.appendChild(spotifyDiv);
         })
     }else{
         var p = document.createElement("p");
         p.innerText = "No Favorites";
-        elements.historyContent.appendChild(p);
+        elements.favoritesContent.appendChild(p);
     }
     
 }
 
+// call back for when favorites modal is closed
 function onFavoritesClose(){
-    elements.historyContent.innerHTML = "";
-    elements.historyModal.classList.add("hidden");
+    elements.favoritesContent.innerHTML = "";
+    elements.favoritesModal.classList.add("hidden");
 }
 
+// saving to favorites on star checked
 function saveToFavorites(url){
     var favorites = getFavorites();
     favorites.unshift(url);
@@ -287,6 +303,7 @@ function saveToFavorites(url){
     localStorage.setItem("spotifyFavorites", JSON.stringify(favorites));
 }
 
+// removing from favorites
 function removeFromFavorites(url){
     var favorites = getFavorites();
     var index = -1;
@@ -302,29 +319,31 @@ function removeFromFavorites(url){
 
 }
 
+// shortcut to get a favorites array from storage
 function getFavorites(){
     var favorites = JSON.parse(localStorage.getItem("spotifyFavorites"));
     return favorites ? favorites : [];
 }
 
-// search pressed
+// on search pressed
 elements.searchButton.addEventListener("click", onSearchPressed);
 
 // catchall for clicks on genius results
 elements.resultsContainer.addEventListener("click", onResultsClick);
 
-let closeButton = document.getElementById('close-button')
-
-closeButton.addEventListener('click', function () {
+// on modal closed 
+document.getElementById('close-button').addEventListener('click', function () {
     elements.modal.style.display = 'none'
     elements.modalContent.innerHTML = ""; // clear this on close so iframe is removed and spotify doesn't keep playing music
 })
 
+// on favorites click
+elements.favoritesButton.addEventListener("click", onFavoritesClick);
 
-elements.historyButton.addEventListener("click", onHistoryClick);
+// on favorites close click
 elements.favoritesCloseButton.addEventListener("click", onFavoritesClose);
-let searchForm = document.querySelector('.search-form')
 
-searchForm.addEventListener('submit', function (event) {
+// prevent default on search submitted
+document.querySelector('.search-form').addEventListener('submit', function (event) {
     event.preventDefault()
 })
