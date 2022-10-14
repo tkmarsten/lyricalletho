@@ -37,7 +37,7 @@ function onSearchPressed() {
         return;
     }
     elements.resultsSpinner.style.display = "inline"; //get that spinner going!
-    paragraph.remove();
+    elements.paragraph.classList.add("hidden");
     
 
     var parameters = {
@@ -70,7 +70,7 @@ function createResultButton(index, artist, title, imageUrl) {
 
     // the main div
     var button = document.createElement("div");
-    button.className = "flex-auto bg-tertiary rounded-[30px] h-32 transition ease-in-out delay-150 hover:scale-110 duration-300 relative hover:z-20";
+    button.className = "flex-auto bg-tertiary rounded-[30px] h-32 transition ease-out hover:scale-110 duration-300 relative hover:z-20";
     button.classList.add("resultButton");
 
     // set custom data attribute defining what index in the hit results this is (this is used to retrieve the stored data)
@@ -92,7 +92,7 @@ function createResultButton(index, artist, title, imageUrl) {
     //the artist
     var artisth1 = document.createElement("h1");
     artisth1.className = "flex-auto h-12 ml-8 rounded-full m-2 p-3 text-lg truncate ... italic";
-    artisth1.innerText = `${artist}`;
+    artisth1.innerText = `- ${artist}`;
     button.appendChild(artisth1);
 
     return button;
@@ -158,8 +158,11 @@ function fetchAndFillModalContent(hitIndex) {
             var firstTrack = data.tracks.items[0];
             var iframe = document.createElement("iframe");
             iframe.setAttribute("src", `https://open.spotify.com/embed/track/${firstTrack.id}`)
-            iframe.className = "h-40 w-96";
+            iframe.className = "h-40 w-[300px]";
             spotifyDiv.appendChild(iframe);
+
+            var starDiv = document.createElement("div");
+            starDiv.className = "relative";
 
             var checkbox = document.createElement("input");
             checkbox.className="ml-2 star";
@@ -172,7 +175,8 @@ function fetchAndFillModalContent(hitIndex) {
                     removeFromFavorites(firstTrack.id)
                 }
             });
-            spotifyDiv.appendChild(checkbox);
+            starDiv.appendChild(checkbox);
+            spotifyDiv.appendChild(starDiv);
             elements.modalContent.appendChild(spotifyDiv);
         }
 
@@ -226,11 +230,11 @@ function fetchAndFillModalContent(hitIndex) {
         a.setAttribute("target", "_blank");
         a.className = "flex justify-center items-center relative";
         var img = document.createElement("img");
-        img.setAttribute("src", "https://i.ytimg.com/vi/FAO8ZAUBx0c/default.jpg");
+        img.setAttribute("src", "https://i.ytimg.com/vi/FAO8ZAUBx0c/mqdefault.jpg");
         img.className = "rounded-[8px]"
         var playImg = document.createElement("img");
         playImg.setAttribute("src", "./assets/images/playButton.png");
-        playImg.className = "absolute w-9";
+        playImg.className = "absolute w-16";
 
         //a.innerHTML = `Watch on <span class='text-red-500'>YouTube</span>`;
         a.appendChild(img);
@@ -242,7 +246,7 @@ function fetchAndFillModalContent(hitIndex) {
         var a = document.createElement("a");
         a.setAttribute("target", "_blank");
         a.setAttribute("href", geniusUrl);
-        a.innerHTML = 'View lyrics on <span class="text-amber-500">Genius</span>';
+        a.innerHTML = 'View lyrics on <span class="font-bold text-amber-500">Genius</span>';
         elements.modalContent.appendChild(a);
 
         // hide the spinner
@@ -270,6 +274,11 @@ function onHistoryClick(){
             xButton.addEventListener("click", (event)=>{
                     removeFromFavorites(fav);
                     spotifyDiv.remove();
+                    if (elements.historyContent.children.length == 0){
+                        var p = document.createElement("p");
+                        p.innerText = "No Favorites."
+                        elements.historyContent.appendChild(p);
+                    }
             });
 
             spotifyDiv.appendChild(xButton);

@@ -46,7 +46,7 @@
   <header class="bg-secondary text-center p-4">
     <h1 class="text-5xl mb-5 text-white">LyricalLetho</h1>
       <form class="search-form inline">
-        <input class="px-4 py-3 rounded-l-lg min-w-[75%]" placeholder="Insert lyrics, title, or artist" id="lyricInput">
+        <input class="px-4 py-3 rounded-l-lg w-1/2" placeholder="Insert lyrics, title, or artist" id="lyricInput">
         <button class="rounded-r-lg bg-blue bg-white p-3" id="searchButton">Search</button>
       </form>
       <button id="historyButton" class="bg-white p-3 rounded-lg ml-2">Favorites</button>
@@ -57,13 +57,20 @@
     <div id="historyPanel" class="flex flex-col max-h-3/4 border border-black rounded-md bg-secondary p-2 pt-0 z-50">
       <div class="flex justify-between">
         <h3 class="whitespace-nowrap p-2 text-center inline text-white">Recent Spotify Favorites</h3>
-        <button id="favoritesClose" class="inline text-white">X</button>
+        <button id="favoritesClose" class="inline text-white">                      
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd"
+            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+            clip-rule="evenodd">
+            </path>
+          </svg>
+        </button>
       </div>
       <div id="historyContent" class="rounded-md bg-tertiary p-2 overflow-y-auto overflow-x-hidden"></div>
     </div>
   </div>
   <!-- main holding EVERYTHING -->
-  <main class="bg-primary flex h-screen">
+  <main class="bg-primary flex">
 
     <div class="flex flex-auto flex-col ml-20 mr-10 pt-10 items-center">
 
@@ -96,11 +103,11 @@
       <p class="text-center -ml-10" id="paragraph">Type lyrics, song / album title, or artist to find what you're looking for! Click on the star when you click
       on a result to save up to five results!</p>
       <div class="flex-auto m-10">
-        <div class="relative z-30" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="modalEl">
+        <div class="relative hidden z-30" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="modalEl">
           <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
           <div class="fixed inset-0 z-30 overflow-y-auto">
             <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-              <div class="relative transform flex rounded-lg bg-white text-left shadow-xl transition-all sm:my-8">
+              <div class="relative transform flex rounded-lg text-left shadow-xl transition-all sm:my-8">
                 <div class="bg-secondary rounded-[10px] px-6 pt-2 pb-4 text-center">
                   <div class="flex justify-between items-start rounded-t">
                     <button type="button" id="close-button"
@@ -112,7 +119,7 @@
                       </svg>
                     </button>
                   </div>
-                  <div class="mt-2 flex flex-col justify-center items-center bg-tertiary rounded-lg" id="modal-content">
+                  <div class="mt-2 flex flex-col justify-center items-center bg-tertiary rounded-lg p-2" id="modal-content">
                     <iframe style="border-radius:12px" class="mb-3" src="" width="100%" height="152" frameBorder="0"
                       allowfullscreen=""
                       allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
