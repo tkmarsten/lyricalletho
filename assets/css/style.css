@@ -4,16 +4,19 @@
     font-size:30px;
     cursor:pointer;
     color:black;
-    margin-right: 10px;
 }
 .star:before {
    content: "\2606";
    position: absolute;
+   top:-12px;
+   left:3px;
    visibility:visible;
    color:black;
 }
 .star:checked:before {
    content: "\2605";
    position: absolute;
+   top:-12px;
+   left:3px;
    color: yellow;
 }
