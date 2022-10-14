@@ -31,7 +31,7 @@ Ever had the tip of the tongue phenomenon? How about… tip of the ear? Use Lyri
 
 ## Usage
 
-To use this webpage, you may open the page using the Github pages link or this [link](https://tkmarsten.github.io/team11-project-1/).
+To use this webpage, you may open the page using the Github pages link or this [link](https://tkmarsten.github.io/lyricalletho/).
 
 ## Credits
 
