@@ -231,7 +231,7 @@ function getAndRenderYoutubeResults(title, artist){
             img.setAttribute("src", data.items[0].snippet.thumbnails.medium.url);
             img.className = "rounded-[8px]"
             var playImg = document.createElement("img");
-            playImg.setAttribute("src", "./assets/images/playButton.png");
+            playImg.setAttribute("src", "./assets/images/playbutton.png");
             playImg.className = "absolute w-16";
     
             //a.innerHTML = `Watch on <span class='text-red-500'>YouTube</span>`;
